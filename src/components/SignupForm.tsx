@@ -19,7 +19,7 @@ const SignupForm = () => {
   });
 
   const onSubmit = async ({ email, password }: userValidatorType) => {
-    toast.error("User created successfully");
+    toast.error(`Email: ${email}, Password: ${password}`);
   };
 
   return (
