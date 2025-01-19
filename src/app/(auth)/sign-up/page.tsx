@@ -20,8 +20,11 @@ const SignUp = async ({ params }: SignUpProp) => {
 
   return (
     <>
-      <Image src="/icon2.png" alt="Error" width={300} height={300} />
-      <h1 className="text-2xl font-semibold tracking-tight">
+      <Link href="/">
+        <Image src="/icon2.png" alt="Error" width={300} height={300} />
+      </Link>
+
+      <h1 className="text-2xl font-semibold tracking-tight py-2">
         Create an account
       </h1>
       <Link

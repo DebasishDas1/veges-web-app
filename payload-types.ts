@@ -13,6 +13,7 @@ export interface Config {
   collections: {
     users: User;
     product: Product;
+    media: Media;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
@@ -21,6 +22,7 @@ export interface Config {
   collectionsSelect: {
     users: UsersSelect<false> | UsersSelect<true>;
     product: ProductSelect<false> | ProductSelect<true>;
+    media: MediaSelect<false> | MediaSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
     'payload-migrations': PayloadMigrationsSelect<false> | PayloadMigrationsSelect<true>;
@@ -81,9 +83,36 @@ export interface User {
  */
 export interface Product {
   id: string;
-  title?: string | null;
+  name: string;
+  image?: (string | null) | Media;
+  price: number;
+  marketPrice?: number | null;
+  category: 'spices-whole' | 'spices-powder' | 'rice' | 'oil';
+  unit: string;
+  available?: boolean | null;
+  urlTitle: string;
+  description: string;
   updatedAt: string;
   createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "media".
+ */
+export interface Media {
+  id: string;
+  altText: string;
+  updatedAt: string;
+  createdAt: string;
+  url?: string | null;
+  thumbnailURL?: string | null;
+  filename?: string | null;
+  mimeType?: string | null;
+  filesize?: number | null;
+  width?: number | null;
+  height?: number | null;
+  focalX?: number | null;
+  focalY?: number | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -99,6 +128,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'product';
         value: string | Product;
+      } | null)
+    | ({
+        relationTo: 'media';
+        value: string | Media;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -163,9 +196,35 @@ export interface UsersSelect<T extends boolean = true> {
  * via the `definition` "product_select".
  */
 export interface ProductSelect<T extends boolean = true> {
-  title?: T;
+  name?: T;
+  image?: T;
+  price?: T;
+  marketPrice?: T;
+  category?: T;
+  unit?: T;
+  available?: T;
+  urlTitle?: T;
+  description?: T;
   updatedAt?: T;
   createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "media_select".
+ */
+export interface MediaSelect<T extends boolean = true> {
+  altText?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  url?: T;
+  thumbnailURL?: T;
+  filename?: T;
+  mimeType?: T;
+  filesize?: T;
+  width?: T;
+  height?: T;
+  focalX?: T;
+  focalY?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

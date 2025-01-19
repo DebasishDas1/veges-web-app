@@ -1,13 +1,16 @@
 import MaxWidthWrapper from "@/components/MaxWidthWrapper";
 import ProductList from "@/components/ProductList";
-import { products } from "@/lib/products";
 import { perks } from "@/lib/bin/info";
 import HomeHeroSection from "@/components/HomeHeroSection";
+import { getProductList } from "@/api/get-product";
 
-const Home = () => {
+const Home = async () => {
+  const products = await getProductList({});
+
   return (
     <>
       <HomeHeroSection />
+
       <MaxWidthWrapper>
         <ProductList list={products} title={"Produce"} />
       </MaxWidthWrapper>

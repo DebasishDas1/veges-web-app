@@ -1,29 +1,37 @@
+"use client";
+
 import Image from "next/image";
 import { ProductProp } from "@/lib/type";
 import { formatPrice } from "@/lib/utils";
 import { Button } from "./ui/button";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
 import { Badge } from "@/components/ui/badge";
+import { useRouter } from "next/navigation"; // Import useRouter for navigation
 
 const ProductItem = ({
   image,
   name,
-  price = "0",
+  price,
+  urlTitle,
   marketPrice = null,
   available = true,
 }: ProductProp) => {
+  const router = useRouter(); // Initialize the router
+
+  const imageUrl =
+    typeof image === "string" ? image : image?.url || "/vegesLogo.png";
+
+  const handleRedirect = () => {
+    router.push(`/product/${urlTitle}`);
+  };
+
   return (
-    <div className="p-2 py-6 md:p-6 flex flex-col items-center justify-center gap-3 shadow-md rounded-2xl hover:scale-105 hover:shadow-md transition-all ease-in-out cursor-pointer bg-white group">
+    <div
+      className="p-2 py-6 md:p-6 flex flex-col items-center justify-center gap-3 shadow-md rounded-2xl hover:scale-105 hover:shadow-md transition-all ease-in-out cursor-pointer bg-white group"
+      onClick={handleRedirect} // Add click handler for redirection
+    >
       <div className="relative h-[200px] w-[200px] flex items-center justify-center overflow-hidden">
         <Image
-          src={image || "/vegesLogo.png"}
+          src={imageUrl} // Use the resolved image URL
           alt={name}
           width={500}
           height={200}
@@ -49,24 +57,12 @@ const ProductItem = ({
         )}
       </div>
 
-      <Dialog>
-        <DialogTrigger asChild>
-          <Button
-            variant="outline"
-            className="group-hover:bg-primary group-hover:text-white"
-          >
-            {name || "Product"} Details
-          </Button>
-        </DialogTrigger>
-        <DialogContent className="max-w-3xl">
-          <DialogHeader>
-            <DialogTitle />
-            <DialogDescription>
-              {name}
-            </DialogDescription>
-          </DialogHeader>
-        </DialogContent>
-      </Dialog>
+      <Button
+        variant="outline"
+        className="group-hover:bg-primary group-hover:text-white"
+      >
+        {name || "Product"} Details
+      </Button>
     </div>
   );
 };

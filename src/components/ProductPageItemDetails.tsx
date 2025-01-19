@@ -1,3 +1,5 @@
+"use client";
+
 import Image from "next/image";
 import {
   Breadcrumb,
@@ -10,24 +12,22 @@ import {
 import { formatPrice } from "@/lib/utils";
 import { Check, Shield } from "lucide-react";
 import { Button } from "./ui/button";
-
-interface ProductPageItemDetailsProp {
-  productName: string;
-}
+import { ProductProp } from "@/lib/type";
+import { toast } from "sonner";
 
 const ProductPageItemDetails = ({
-  productName,
-}: ProductPageItemDetailsProp) => {
-  const item = {
-    name: "Green Elaichi",
-    image: "/greenElaichi.png",
-    price: "3400",
-    category: "Spices Whole",
-    unit: "Kg",
-    available: true,
-    vegesPrice: "100",
-    description:
-      "Add a refreshing and aromatic flavor to your dishes with Green Elaichi (Cardamom). Known for its sweet and spicy notes, it enhances the taste of both sweet and savory recipes, including chai, Biryani, desserts, and curries.",
+  image,
+  name,
+  price,
+  category,
+  description,
+  marketPrice,
+}: ProductProp) => {
+  const imageUrl =
+    typeof image === "string" ? image : image?.url || "/vegesLogo.png";
+
+  const addToCart = () => {
+    toast.success(`${name} is Added to cart`);
   };
 
   return (
@@ -36,7 +36,7 @@ const ProductPageItemDetails = ({
       <div className="aspect-auto rounded-lg">
         {/* <ImageSlider urls={validUrls} /> */}
         <Image
-          src={"/greenElaichi.png"}
+          src={imageUrl}
           alt={"name"}
           width={500}
           height={200}
@@ -57,32 +57,31 @@ const ProductPageItemDetails = ({
             </BreadcrumbItem>
             <BreadcrumbSeparator />
             <BreadcrumbItem>
-              <BreadcrumbPage>{productName}</BreadcrumbPage>
+              <BreadcrumbPage>{name}</BreadcrumbPage>
             </BreadcrumbItem>
           </BreadcrumbList>
         </Breadcrumb>
 
         <div className="mt-4">
           <h1 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
-            {item.name}
+            {name}
           </h1>
         </div>
 
         <section className="mt-4">
           <div className="flex items-center">
-            <p className="font-medium text-gray-900">
-              {formatPrice(item.vegesPrice)}
+            <p className="font-medium text-black">{formatPrice(price)}</p>
+            <p className="font-medium border-l ml-4 pl-4 text-gray-500">
+              {formatPrice(marketPrice ?? "")}
             </p>
 
             <div className="ml-4 border-l text-muted-foreground border-gray-300 pl-4">
-              {item.category}
+              {category}
             </div>
           </div>
 
           <div className="mt-4 space-y-6">
-            <p className="text-base text-muted-foreground">
-              {item.description}
-            </p>
+            <p className="text-base text-muted-foreground">{description}</p>
           </div>
 
           <div className="mt-6 flex items-center">
@@ -100,7 +99,9 @@ const ProductPageItemDetails = ({
         <div className="mt-10 lg:col-start-1 lg:row-start-2 lg:max-w-lg lg:self-start">
           <div>
             <div className="mt-10">
-              <Button>cart</Button>
+              <Button className="w-full" onClick={addToCart}>
+                Add to cart
+              </Button>
             </div>
             <div className="mt-6 text-center">
               <div className="group inline-flex text-sm text-medium">
