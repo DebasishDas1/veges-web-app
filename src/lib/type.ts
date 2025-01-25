@@ -2,8 +2,8 @@ import { StaticImageData } from "next/image";
 // import { execPath } from "process";
 
 export interface NavItemProps {
-  text: string;
-  url: string;
+  label: string;
+  href: string;
 }
 
 export interface HeroSectionProp {

@@ -21,19 +21,19 @@ import { subTitleCheck } from "@/lib/utils";
 const MobileNav = () => {
   const pathnameList = usePathname().split("/");
 
-  const renderNavItem = ({ url, text }: NavItemProps): JSX.Element => (
-    <SheetClose asChild key={url}>
+  const renderNavItem = ({ label, href }: NavItemProps): JSX.Element => (
+    <SheetClose asChild key={href}>
       <Link
-        href={url}
+        href={href}
         className={`flex regular-16 py-4 ${
-          subTitleCheck({ pathnameList, text }) ? "text-green-600" : ""
+          subTitleCheck({ pathnameList, text: label }) ? "text-green-600" : ""
         }`}
       >
         <button
           type="submit"
           className="outline-none flex items-center text-3xl font-semibold"
         >
-          <span>{text}</span>
+          <span>{label}</span>
         </button>
       </Link>
     </SheetClose>

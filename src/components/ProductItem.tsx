@@ -17,11 +17,9 @@ const ProductItem = ({
 }: ProductProp) => {
   const router = useRouter(); // Initialize the router
 
-  let imageUrl = typeof image === "string" ? image : image?.url || "/icon2.png";
+  // let imageUrl = typeof image === "string" ? image : image?.url || "/icon2.png";
 
-  if (imageUrl === "") {
-    imageUrl = "/icon2.png";
-  }
+  const imageUrl = typeof image === "string" ? image : "/icon2.png";
 
   const handleRedirect = () => {
     router.push(`/product/${urlTitle}`);
