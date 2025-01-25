@@ -1,101 +1,169 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import MaxWidthWrapper from "./MaxWidthWrapper";
 import MobileNav from "./MobileNav";
 import Image from "next/image";
-import NavItem from "./NavItem";
 import Cart from "./Cart";
-import { useRef, useState, useCallback, RefObject, useEffect } from "react";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import {
+  NavigationMenu,
+  NavigationMenuContent,
+  NavigationMenuItem,
+  NavigationMenuLink,
+  NavigationMenuList,
+  NavigationMenuTrigger,
+} from "@/components/ui/navigation-menu";
+import { getUserData } from "@/api/user-auth";
 import { product_categories } from "@/lib/bin/product_categories";
-import { useOnClickOutside } from "@/hook/use-on-click-outside";
+import React from "react";
+import { cn } from "@/lib/utils";
+import { Laugh } from "lucide-react";
+import { User } from "../../payload-types";
+
+type UserData =
+  | { success: true; user: User }
+  | { success: false; user: null; error: string }
+  | undefined;
 
 const Navbar = () => {
-  const [activeIndex, setActiveIndex] = useState<null | number>(null);
-  const navRef = useRef<HTMLDivElement>(null) as RefObject<HTMLElement>;
-
-  const isAnyOpen = activeIndex !== null;
-
-  // Close dropdowns when clicking outside
-  useOnClickOutside(navRef, () => {
-    if (isAnyOpen) {
-      setActiveIndex(null);
-    }
-  });
+  const [userData, setUserData] = useState<UserData>(undefined);
 
   useEffect(() => {
-    const handler = (e: KeyboardEvent) => {
-      if (e.key === "Escape") {
-        setActiveIndex(null);
+    const fetchUserData = async () => {
+      try {
+        const data = await getUserData();
+        setUserData(data);
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+        setUserData({
+          success: false,
+          user: null,
+          error: "Failed to fetch user data",
+        });
       }
     };
-    document.addEventListener("keydown", handler);
-    return () => {
-      document.removeEventListener("keydown", handler);
-    };
-  }, []);
 
-  const handleOpen = useCallback((index: number) => {
-    setActiveIndex((prevIndex) => (prevIndex === index ? null : index));
-  }, []);
-
-  const closeAll = useCallback(() => {
-    setActiveIndex(null);
+    fetchUserData();
   }, []);
 
   return (
     <div className="backdrop-blur-3xl bg-white/30 sticky z-50 top-0 inset-x-0 h-14">
-      <header className="relative" ref={navRef}>
-        <MaxWidthWrapper>
-          <div className="flex h-14 items-center">
-            {/* Logo */}
-            <div className="flex">
-              <Link href="/" className="flex-shrink-0 mx-6">
-                <div className="h-7 w-20 relative overflow-hidden">
-                  <Image
-                    src="/icon2.png"
-                    alt="Logo"
-                    fill
-                    priority
-                    className="object-cover object-center"
-                  />
-                </div>
-              </Link>
+      <header className="relative">
+        <MaxWidthWrapper className="flex h-14 items-center justify-between">
+          {/* Avatar for Mobile */}
+          <div className="flex md:hidden pr-[25%]">
+            <NavigationMenu className="ml-4">
+              <NavigationMenuList>
+                {userData?.success ? (
+                  <NavigationMenuItem>
+                    <NavigationMenuLink asChild>
+                      <Link href="/profile">
+                        <Avatar>
+                          <AvatarFallback>
+                            {userData.user.email[0]}
+                          </AvatarFallback>
+                        </Avatar>
+                      </Link>
+                    </NavigationMenuLink>
+                  </NavigationMenuItem>
+                ) : (
+                  <NavigationMenuItem>
+                    <NavigationMenuLink asChild>
+                      <Link href="/sign-in">
+                        <Laugh />
+                      </Link>
+                    </NavigationMenuLink>
+                  </NavigationMenuItem>
+                )}
+              </NavigationMenuList>
+            </NavigationMenu>
+          </div>
+
+          {/* Logo */}
+          <Link href="/" className="flex-shrink-0 ml-2 mr-6" aria-label="Home">
+            <div className="h-7 w-20 relative overflow-hidden md:mx-auto">
+              <Image
+                src="/icon2.png"
+                alt="Logo"
+                fill
+                priority
+                className="object-cover object-center"
+              />
             </div>
+          </Link>
 
-            {/* Desktop Navigation */}
-            <div className="z-50 lg:ml-8 lg:block lg:self-stretch">
-              <nav className="hidden md:flex h-full gap-2">
-                {product_categories.map((category, i) => {
-                  const isOpen = i === activeIndex;
+          {/* Desktop Navigation */}
+          <div className="hidden md:flex lg:ml-8 lg:block lg:self-stretch">
+            <nav
+              className="hidden md:flex h-full gap-2"
+              aria-label="Main Navigation"
+            >
+              <NavigationMenu>
+                <NavigationMenuList>
+                  {product_categories.map((categories, i) => (
+                    <NavigationMenuItem key={i}>
+                      <NavigationMenuTrigger className="font-bold text-lg bg-transparent">
+                        {categories.label}
+                      </NavigationMenuTrigger>
+                      <NavigationMenuContent>
+                        <ul className="grid w-[850px] gap-3 p-4 grid-cols-2">
+                          {categories.featured.map((item) => (
+                            <ListItem
+                              key={item.name}
+                              title={item.name}
+                              href={item.href}
+                            >
+                              {item.name}
+                            </ListItem>
+                          ))}
+                        </ul>
+                      </NavigationMenuContent>
+                    </NavigationMenuItem>
+                  ))}
+                </NavigationMenuList>
+              </NavigationMenu>
+            </nav>
+          </div>
 
-                  return (
-                    <NavItem
-                      key={category.value}
-                      category={category}
-                      isOpen={isOpen}
-                      isAnyOpen={isAnyOpen}
-                      handleOpen={() => handleOpen(i)}
-                      close={closeAll}
-                    />
-                  );
-                })}
-              </nav>
-            </div>
-
-            {/* Cart and Mobile Navigation */}
-            <div className="ml-auto flex items-center">
-              {/* Cart */}
-              <div className="hidden md:flex lg:flex-1 lg:items-center lg:justify-end lg:space-x-6">
-                <div className="ml-4 flow-root lg:ml-6">
-                  <Cart />
-                </div>
+          {/* Cart and Mobile Navigation */}
+          <div className="ml-auto flex items-center">
+            {/* Cart */}
+            <div className="hidden md:flex lg:flex-1 lg:items-center lg:justify-end lg:space-x-6 items-center">
+              <div className="ml-4 flow-root lg:ml-6">
+                <Cart />
               </div>
 
-              {/* Mobile Navigation */}
-              <div className="flex md:hidden items-end ml-auto mr-3">
-                <MobileNav />
-              </div>
+              {/* Sign-in */}
+              <NavigationMenu className="ml-4">
+                <NavigationMenuList>
+                  {userData?.success ? (
+                    <NavigationMenuItem>
+                      <NavigationMenuLink asChild>
+                        <Link href="/profile">
+                          <Avatar>
+                            <AvatarFallback>
+                              {userData.user.email[0]}
+                            </AvatarFallback>
+                          </Avatar>
+                        </Link>
+                      </NavigationMenuLink>
+                    </NavigationMenuItem>
+                  ) : (
+                    <NavigationMenuItem>
+                      <NavigationMenuLink asChild>
+                        <Link href="/sign-in">Sign In</Link>
+                      </NavigationMenuLink>
+                    </NavigationMenuItem>
+                  )}
+                </NavigationMenuList>
+              </NavigationMenu>
+            </div>
+
+            {/* Mobile Navigation */}
+            <div className="flex md:hidden items-end ml-auto mr-3">
+              <MobileNav />
             </div>
           </div>
         </MaxWidthWrapper>
@@ -105,3 +173,29 @@ const Navbar = () => {
 };
 
 export default Navbar;
+
+const ListItem = React.forwardRef<
+  React.ElementRef<"a">,
+  React.ComponentPropsWithoutRef<"a">
+>(({ className, title, children, ...props }, ref) => {
+  return (
+    <li>
+      <NavigationMenuLink asChild>
+        <a
+          ref={ref}
+          className={cn(
+            "block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground",
+            className
+          )}
+          {...props}
+        >
+          <div className="text-3xl font-medium leading-none">{title}</div>
+          <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
+            {children}
+          </p>
+        </a>
+      </NavigationMenuLink>
+    </li>
+  );
+});
+ListItem.displayName = "ListItem";

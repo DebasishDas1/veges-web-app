@@ -2,22 +2,9 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { buttonVariants } from "@/components/ui/button";
-import SignupForm from "@/components/SignupForm";
-import { userSignup } from "@/api/user-auth";
+import SignUpForm from "@/components/SignUpForm";
 
-interface SignUpProp {
-  params: Promise<{
-    email?: string;
-    password?: string;
-  }>;
-}
-
-const SignUp = async ({ params }: SignUpProp) => {
-  const { email, password } = await params;
-  const result = await userSignup({ email: email, password: password });
-
-  console.log(result);
-
+const SignUp = async () => {
   return (
     <>
       <Link href="/">
@@ -37,7 +24,7 @@ const SignUp = async ({ params }: SignUpProp) => {
         Already have an account? Sign-in
         <ArrowRight className="h-4 w-4" />
       </Link>
-      <SignupForm />
+      <SignUpForm />
     </>
   );
 };

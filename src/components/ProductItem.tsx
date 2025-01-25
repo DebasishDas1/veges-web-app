@@ -17,19 +17,22 @@ const ProductItem = ({
 }: ProductProp) => {
   const router = useRouter(); // Initialize the router
 
-  const imageUrl =
-    typeof image === "string" ? image : image?.url || "/vegesLogo.png";
+  let imageUrl = typeof image === "string" ? image : image?.url || "/icon2.png";
+
+  if (imageUrl === "") {
+    imageUrl = "/icon2.png";
+  }
 
   const handleRedirect = () => {
     router.push(`/product/${urlTitle}`);
   };
 
   return (
-    <div
-      className="p-2 py-6 md:p-6 flex flex-col items-center justify-center gap-3 shadow-md rounded-2xl hover:scale-105 hover:shadow-md transition-all ease-in-out cursor-pointer bg-white group"
-      onClick={handleRedirect} // Add click handler for redirection
-    >
-      <div className="relative h-[200px] w-[200px] flex items-center justify-center overflow-hidden">
+    <div className="p-2 py-6 md:p-6 flex flex-col items-center justify-center gap-3 shadow-md rounded-2xl hover:scale-105 hover:shadow-md transition-all ease-in-out cursor-pointer bg-white group">
+      <div
+        className="relative h-[200px] w-[200px] flex items-center justify-center overflow-hidden"
+        onClick={handleRedirect}
+      >
         <Image
           src={imageUrl} // Use the resolved image URL
           alt={name}
@@ -41,7 +44,10 @@ const ProductItem = ({
         />
       </div>
 
-      <h2 className="font-black text-xl text-center truncate w-full">
+      <h2
+        className="font-black text-xl text-center truncate w-full"
+        onClick={handleRedirect}
+      >
         {name || "Unknown Product"}
       </h2>
 

@@ -8,10 +8,10 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { userValidator, userValidatorType } from "@/zod/user-validator";
 import { toast } from "sonner";
-import { userSignUp } from "@/api/user-auth";
+import { userSignIn } from "@/api/user-auth";
 import { useRouter } from "next/navigation";
 
-const SignUpForm = () => {
+const SignInForm = () => {
   const rout = useRouter();
   const {
     register,
@@ -23,16 +23,16 @@ const SignUpForm = () => {
 
   const onSubmit = async ({ email, password }: userValidatorType) => {
     try {
-      const result = await userSignUp({ email, password });
+      const result = await userSignIn({ email, password });
 
       if (result.success) {
-        rout.push("/sign-in");
-        toast.success(`${result.sentToEmail} signed up successfully.`);
+        rout.push("/");
+        toast.success("User signed up successfully:");
       } else {
-        toast.error(`User already exists with email : ${result.sentToEmail}`);
+        toast.error(`User already exists with email :`);
       }
     } catch (error) {
-      toast.error(`${error} : Signup failed`);
+      toast.error(`${error} : Signin failed`);
     }
   };
 
@@ -68,10 +68,10 @@ const SignUpForm = () => {
           )}
         </div>
 
-        <Button type="submit">Sign up</Button>
+        <Button type="submit">Sign in</Button>
       </div>
     </form>
   );
 };
 
-export default SignUpForm;
+export default SignInForm;

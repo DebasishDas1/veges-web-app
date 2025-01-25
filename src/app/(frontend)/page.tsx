@@ -23,7 +23,7 @@ const Home = async () => {
               className="text-center md:flex md:items-start md:text-left lg:block lg:text-center py-3"
             >
               <div className="md:flex-shrink-0 flex justify-center">
-                <div className="h-16 w-16 flex items-center justify-center rounded-full bg-green-400 text-black">
+                <div className="h-16 w-16 flex items-center justify-center rounded-full bg-green-600 text-white">
                   {<perk.Icon className="w-1/3 h-1/3" />}
                 </div>
               </div>

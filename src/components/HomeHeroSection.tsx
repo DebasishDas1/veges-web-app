@@ -26,13 +26,13 @@ const HomeHeroSection = () => {
   return (
     <div className="w-full">
       <div className="container mx-auto">
-        <div className="flex gap-8 py-20 lg:py-40 items-center justify-center flex-col">
+        <div className="flex gap-8 py-20 lg:py-40 items-center justify-center flex-col mx-6">
           <div className="flex gap-4 flex-col">
-            <h1 className="text-5xl md:text-7xl max-w-2xl tracking-tighter text-center font-regular">
+            <h1 className="text-4xl md:text-7xl max-w-2xl tracking-tighter text-center font-regular font-bold">
               <span className="text-spektr-cyan-50">
                 One stop destination for all your
               </span>
-              <span className="relative flex w-full justify-center overflow-hidden text-center md:pb-4 md:pt-1 text-green-500">
+              <span className="relative flex w-full justify-center overflow-hidden text-center md:pb-4 md:pt-1 text-green-600">
                 &nbsp;
                 {titles.map((title, index) => (
                   <motion.span

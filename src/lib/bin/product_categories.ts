@@ -1,28 +1,52 @@
 export const product_categories = [
   {
     label: "Rice",
-    value: "rice" as const,
     featured: [
       {
-        name: "Editor picks",
-        href: `/products?category=ui_kits`,
-        imageSrc: "/vegesLogo.png",
+        name: "Nafis",
+        href: `/rice`,
+      },
+      {
+        name: "Golden Grain Premium",
+        href: `/rice`,
+      },
+      {
+        name: "Amina Royal",
+        href: `/rice`,
+      },
+      {
+        name: "Biriyani Gold",
+        href: `/rice`,
       },
     ],
   },
   {
     label: "Spices",
-    value: "spices" as const,
     featured: [
       {
-        name: "masala",
-        href: `/masala`,
-        imageSrc: "/spices.png",
+        name: "Spices whole",
+        href: `/spices-whole`,
       },
       {
-        name: "New Arrivals",
-        href: "/products?category=icons&sort=desc",
-        imageSrc: "/spice_powder.png",
+        name: "Spices powder",
+        href: `/spices-powder`,
+      },
+    ],
+  },
+  {
+    label: "Service",
+    featured: [
+      {
+        name: "Terms of service",
+        href: `/tos`,
+      },
+      {
+        name: "Privacy policy",
+        href: `/privacy-policy`,
+      },
+      {
+        name: "About us",
+        href: `/about-us`,
       },
     ],
   },
