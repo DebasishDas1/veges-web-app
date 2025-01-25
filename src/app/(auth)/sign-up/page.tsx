@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { buttonVariants } from "@/components/ui/button";
-import SignUpForm from "@/components/SignUpForm";
+import SignUpForm from "@/components/SignupForm";
 
 const SignUp = async () => {
   return (
