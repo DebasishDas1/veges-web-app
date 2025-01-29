@@ -6,7 +6,6 @@ import MaxWidthWrapper from "./MaxWidthWrapper";
 import MobileNav from "./MobileNav";
 import Image from "next/image";
 import Cart from "./Cart";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -19,16 +18,12 @@ import { getUserData } from "@/api/user-auth";
 import { product_categories } from "@/lib/bin/product_categories";
 import React from "react";
 import { cn } from "@/lib/utils";
-import { Laugh } from "lucide-react";
-import { User } from "../../payload-types";
-
-type UserData =
-  | { success: true; user: User }
-  | { success: false; user: null; error: string }
-  | undefined;
+import MobileSearch from "./MobileSearch";
+import ProfileAvatar from "./ProfileAvatar";
+import { GetUserDataProp } from "@/lib/type";
 
 const Navbar = () => {
-  const [userData, setUserData] = useState<UserData>(undefined);
+  const [userData, setUserData] = useState<GetUserDataProp>();
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -51,120 +46,73 @@ const Navbar = () => {
   return (
     <div className="backdrop-blur-3xl bg-white/30 sticky z-50 top-0 inset-x-0 h-14">
       <header className="relative">
-        <MaxWidthWrapper className="flex h-14 items-center justify-between">
-          {/* Avatar for Mobile */}
-          <div className="flex md:hidden pr-[25%]">
-            <NavigationMenu className="ml-4">
-              <NavigationMenuList>
-                {userData?.success ? (
-                  <NavigationMenuItem>
-                    <NavigationMenuLink asChild>
-                      <Link href="/profile">
-                        <Avatar>
-                          <AvatarFallback>
-                            {userData.user.email[0]}
-                          </AvatarFallback>
-                        </Avatar>
-                      </Link>
-                    </NavigationMenuLink>
-                  </NavigationMenuItem>
-                ) : (
-                  <NavigationMenuItem>
-                    <NavigationMenuLink asChild>
-                      <Link href="/sign-in">
-                        <Laugh />
-                      </Link>
-                    </NavigationMenuLink>
-                  </NavigationMenuItem>
-                )}
-              </NavigationMenuList>
-            </NavigationMenu>
-          </div>
-
-          {/* Logo */}
-          <Link href="/" className="flex-shrink-0 ml-2 mr-6" aria-label="Home">
-            <div className="h-7 w-20 relative overflow-hidden md:mx-auto">
-              <Image
-                src="/icon2.png"
-                alt="Logo"
-                fill
-                priority
-                className="object-cover object-center"
-              />
-            </div>
-          </Link>
-
-          {/* Desktop Navigation */}
-          <div className="hidden md:flex lg:ml-8 lg:block lg:self-stretch">
-            <nav
-              className="hidden md:flex h-full gap-2"
-              aria-label="Main Navigation"
-            >
-              <NavigationMenu>
-                <NavigationMenuList>
-                  {product_categories.map((categories, i) => (
-                    <NavigationMenuItem key={i}>
-                      <NavigationMenuTrigger className="font-bold text-lg bg-transparent">
-                        {categories.label}
-                      </NavigationMenuTrigger>
-                      <NavigationMenuContent>
-                        <ul className="grid w-[850px] gap-3 p-4 grid-cols-2">
-                          {categories.featured.map((item) => (
-                            <ListItem
-                              key={item.name}
-                              title={item.name}
-                              href={item.href}
-                            >
-                              {item.name}
-                            </ListItem>
-                          ))}
-                        </ul>
-                      </NavigationMenuContent>
-                    </NavigationMenuItem>
-                  ))}
-                </NavigationMenuList>
-              </NavigationMenu>
-            </nav>
-          </div>
-
-          {/* Cart and Mobile Navigation */}
-          <div className="ml-auto flex items-center">
-            {/* Cart */}
-            <div className="hidden md:flex lg:flex-1 lg:items-center lg:justify-end lg:space-x-6 items-center">
-              <div className="ml-4 flow-root lg:ml-6">
-                <Cart />
+        <MaxWidthWrapper className="flex h-14 items-center justify-between px-6">
+          <div className="flex items-center justify-between ">
+            {/* Logo */}
+            <Link href="/" className="flex-shrink-0" aria-label="Home">
+              <div className="h-7 w-20 relative overflow-hidden md:mx-auto">
+                <Image
+                  src="/icon2.png"
+                  alt="Logo"
+                  fill
+                  priority
+                  className="object-cover object-center"
+                />
               </div>
+            </Link>
 
-              {/* Sign-in */}
-              <NavigationMenu className="ml-4">
-                <NavigationMenuList>
-                  {userData?.success ? (
-                    <NavigationMenuItem>
-                      <NavigationMenuLink asChild>
-                        <Link href="/profile">
-                          <Avatar>
-                            <AvatarFallback>
-                              {userData.user.email[0]}
-                            </AvatarFallback>
-                          </Avatar>
-                        </Link>
-                      </NavigationMenuLink>
-                    </NavigationMenuItem>
-                  ) : (
-                    <NavigationMenuItem>
-                      <NavigationMenuLink asChild>
-                        <Link href="/sign-in">Sign In</Link>
-                      </NavigationMenuLink>
-                    </NavigationMenuItem>
-                  )}
-                </NavigationMenuList>
-              </NavigationMenu>
+            {/* Desktop option Navigation */}
+            <div className="hidden md:flex lg:ml-8 lg:block lg:self-stretch">
+              <nav
+                className="hidden md:flex h-full gap-2"
+                aria-label="Main Navigation"
+              >
+                <NavigationMenu>
+                  <NavigationMenuList>
+                    {product_categories.map((categories, i) => (
+                      <NavigationMenuItem key={i}>
+                        <NavigationMenuTrigger className="font-bold text-lg bg-transparent">
+                          {categories.label}
+                        </NavigationMenuTrigger>
+                        <NavigationMenuContent>
+                          <ul className="grid w-[800px] gap-3 p-4 grid-cols-2">
+                            {categories.featured.map((item) => (
+                              <ListItem
+                                key={item.name}
+                                title={item.name}
+                                href={item.href}
+                              >
+                                {item.name}
+                              </ListItem>
+                            ))}
+                          </ul>
+                        </NavigationMenuContent>
+                      </NavigationMenuItem>
+                    ))}
+                  </NavigationMenuList>
+                </NavigationMenu>
+              </nav>
             </div>
+          </div>
 
-            {/* Mobile Navigation */}
-            <div className="flex md:hidden items-end ml-auto mr-3">
-              <MobileNav />
-            </div>
+          {/* Mobile Navigation */}
+          <div className="flex md:hidden">
+            <Cart />
+            <ProfileAvatar
+              loggedIn={userData?.success}
+              avatarName={userData?.user?.email}
+            />
+            <MobileSearch />
+            <MobileNav />
+          </div>
+
+          {/* Cart and Desktop Navigation */}
+          <div className="hidden md:flex">
+            <ProfileAvatar
+              loggedIn={userData?.success}
+              avatarName={userData?.user?.email}
+            />
+            <Cart />
           </div>
         </MaxWidthWrapper>
       </header>

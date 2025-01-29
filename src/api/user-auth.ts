@@ -4,14 +4,8 @@ import { getPayload } from "payload";
 import configPromise from "@payload-config";
 import { cookies } from "next/headers";
 import { decodeJwt } from "jose";
-import { User } from "../../payload-types";
+import { GetUserDataProp, UserAuthParams } from "@/lib/type";
 
-type UserAuthParams = {
-  email: string;
-  password: string;
-};
-
-let userId = "";
 const payload = await getPayload({ config: configPromise });
 
 export const userSignUp = async ({ email, password }: UserAuthParams) => {
@@ -92,8 +86,6 @@ export const userSignIn = async ({ email, password }: UserAuthParams) => {
       path: "/",
     });
 
-    userdata();
-
     return {
       success: true,
       error: "",
@@ -106,29 +98,28 @@ export const userSignIn = async ({ email, password }: UserAuthParams) => {
   }
 };
 
-export const userdata = async () => {
+export const userDataId = async () => {
   try {
     const cookieStore = await cookies();
     const token = cookieStore.get("veges_token");
     if (token) {
       const user = decodeJwt(token.value);
-      userId = user?.id as string;
-      return user;
+      return user?.id as string;
     }
-    return { email: null };
+    return null;
   } catch (error) {
     console.log(error);
   }
 };
 
-export const getUserData = async (): Promise<
-  { success: true; user: User } | { success: false; user: null; error: string }
-> => {
+export const getUserData = async (): Promise<GetUserDataProp> => {
+  const userId = await userDataId();
+
   if (!userId) {
     return {
       success: false,
       user: null,
-      error: "User ID is required",
+      error: "User not found",
     };
   }
 

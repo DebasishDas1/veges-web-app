@@ -1,4 +1,5 @@
 import { StaticImageData } from "next/image";
+import { User } from "../../payload-types";
 // import { execPath } from "process";
 
 export interface NavItemProps {
@@ -120,4 +121,21 @@ export interface Media {
       filename?: string | null;
     };
   };
+}
+
+export interface GetUserDataProp {
+  success: boolean;
+  user: User | null;
+  error?: string;
+}
+
+export interface UserAuthParams {
+  email: string;
+  password: string;
+}
+
+export interface ProfileAvatarProps {
+  loggedIn?: boolean;
+  avatarImage?: string;
+  avatarName?: string;
 }

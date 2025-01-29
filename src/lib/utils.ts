@@ -28,6 +28,7 @@ export function formatPrice(
 export function constructMetadata({
   title = "",
   description = "",
+  keywords = "",
   noIndex = false,
   exact = false,
 }: {
@@ -35,6 +36,7 @@ export function constructMetadata({
   description?: string;
   noIndex?: boolean;
   exact?: boolean;
+  keywords?: string;
 } = {}): Metadata {
   return {
     title: exact ? title : `${title} - Veges`,
@@ -43,6 +45,7 @@ export function constructMetadata({
       title,
       description,
     },
+    keywords,
     twitter: {
       card: "summary_large_image",
       title,

@@ -19,6 +19,11 @@ export const Product: CollectionConfig = {
       type: "upload",
       relationTo: "media",
     },
+    // {
+    //   name: "image",
+    //   type: "text",
+    //   required: true,
+    // },
     {
       name: "price",
       type: "number",

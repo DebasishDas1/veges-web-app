@@ -5,10 +5,11 @@ import { buildConfig } from "payload";
 import { Users } from "./collections/Users";
 import { Product } from "./collections/Product";
 import { Media } from "./collections/Media";
+import { Orders } from "./collections/Orders";
 
 export default buildConfig({
   editor: lexicalEditor(),
-  collections: [Users, Product, Media],
+  collections: [Users, Product, Media, Orders],
   secret: process.env.PAYLOAD_SECRET || "",
   db: mongooseAdapter({
     url: process.env.DATABASE_URI || "",
