@@ -19,8 +19,8 @@ const ProductItem = ({
 
   // console.log("yo : ", image);
 
-  let imageUrl = typeof image === "string" ? image : image?.url || "/icon2.png";
-  console.log("imageUrl : ", imageUrl);
+  const imageUrl =
+    typeof image === "string" ? image : image?.url || "/icon2.png";
 
   // const imageUrl = typeof image === "string" ? image : "/icon2.png";
 
