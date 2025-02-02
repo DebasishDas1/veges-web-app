@@ -33,17 +33,17 @@ export const Product: CollectionConfig = {
       name: "marketPrice",
       type: "number",
     },
-    {
-      name: "category",
-      type: "select",
-      options: [
-        { label: "Spices Whole", value: "spices-whole" },
-        { label: "Spices Powder", value: "spices-powder" },
-        { label: "Rice", value: "rice" },
-        { label: "Oil", value: "oil" },
-      ],
-      required: true,
-    },
+    // {
+    //   name: "category",
+    //   type: "select",
+    //   options: [
+    //     { label: "Spices Whole", value: "spices-whole" },
+    //     { label: "Spices Powder", value: "spices-powder" },
+    //     { label: "Rice", value: "rice" },
+    //     { label: "Oil", value: "oil" },
+    //   ],
+    //   required: true,
+    // },
     {
       name: "unit",
       type: "text",

@@ -16,7 +16,7 @@ const ProfileAvatar = ({
             <AvatarImage src={avatarImage} />
             <AvatarFallback>{avatarName ? avatarName[0] : ""}</AvatarFallback>
           </Avatar>
-          <span className="hidden md:flex pl-3 text-green-600">
+          <span className="hidden md:flex pl-3 text-green-700">
             {avatarName}
           </span>
         </Link>

@@ -8,7 +8,7 @@ import { Badge } from "@/components/ui/badge";
 import { useRouter } from "next/navigation"; // Import useRouter for navigation
 
 const ProductItem = ({
-  image,
+  // image,
   name,
   price,
   urlTitle,
@@ -17,7 +17,7 @@ const ProductItem = ({
 }: ProductProp) => {
   const router = useRouter(); // Initialize the router
 
-  console.log("yo : ", image);
+  // console.log("yo : ", image);
 
   // let imageUrl = typeof image === "string" ? image : image?.url || "/icon2.png";
 

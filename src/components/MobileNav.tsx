@@ -26,7 +26,7 @@ const MobileNav = () => {
       <Link
         href={href}
         className={`flex regular-16 py-4 ${
-          subTitleCheck({ pathnameList, text: label }) ? "text-green-600" : ""
+          subTitleCheck({ pathnameList, text: label }) ? "text-green-700" : ""
         }`}
       >
         <button

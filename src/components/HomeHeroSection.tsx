@@ -32,7 +32,7 @@ const HomeHeroSection = () => {
               <span className="text-spektr-cyan-50">
                 One stop destination for all your
               </span>
-              <span className="relative flex w-full justify-center overflow-hidden text-center md:pb-4 md:pt-1 text-green-600">
+              <span className="relative flex w-full justify-center overflow-hidden text-center md:pb-4 md:pt-1 text-green-700">
                 &nbsp;
                 {titles.map((title, index) => (
                   <motion.span
