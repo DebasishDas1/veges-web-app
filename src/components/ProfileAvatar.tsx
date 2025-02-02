@@ -1,6 +1,6 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import Link from "next/link";
-import { Ghost } from "lucide-react";
+import { UserRound } from "lucide-react";
 import { ProfileAvatarProps } from "@/lib/type";
 
 const ProfileAvatar = ({
@@ -22,7 +22,7 @@ const ProfileAvatar = ({
         </Link>
       ) : (
         <Link href="/sign-in">
-          <Ghost />
+          <UserRound />
         </Link>
       )}
     </div>

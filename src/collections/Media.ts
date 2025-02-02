@@ -1,4 +1,4 @@
-import type { CollectionConfig } from "payload";
+import { CollectionConfig } from "payload";
 
 export const Media: CollectionConfig = {
   slug: "media",
@@ -9,14 +9,8 @@ export const Media: CollectionConfig = {
     delete: ({ req: { user } }) => user?.role === "admin",
   },
   upload: {
-    staticDir: "uploads", // Directory to store uploaded files
-    mimeTypes: ["image/*"], // Restrict uploads to image files
+    staticDir: "uploads", // Local storage fallback (optional)
+    mimeTypes: ["image/*"], // Restrict to images only
   },
-  fields: [
-    {
-      name: "altText",
-      type: "text",
-      required: true,
-    },
-  ],
+  fields: [],
 };

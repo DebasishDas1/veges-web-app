@@ -8,7 +8,7 @@ import { Badge } from "@/components/ui/badge";
 import { useRouter } from "next/navigation"; // Import useRouter for navigation
 
 const ProductItem = ({
-  // image,
+  image,
   name,
   price,
   urlTitle,
@@ -19,7 +19,8 @@ const ProductItem = ({
 
   // console.log("yo : ", image);
 
-  // let imageUrl = typeof image === "string" ? image : image?.url || "/icon2.png";
+  let imageUrl = typeof image === "string" ? image : image?.url || "/icon2.png";
+  console.log("imageUrl : ", imageUrl);
 
   // const imageUrl = typeof image === "string" ? image : "/icon2.png";
 
@@ -34,8 +35,8 @@ const ProductItem = ({
         onClick={handleRedirect}
       >
         <Image
-          // src={imageUrl}
-          src="/icon2.png"
+          src={imageUrl}
+          // src="/icon2.png"
           alt={name}
           width={500}
           height={200}
