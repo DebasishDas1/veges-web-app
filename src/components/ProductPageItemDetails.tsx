@@ -9,51 +9,78 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
-import { formatPrice } from "@/lib/utils";
-import { Check, Shield } from "lucide-react";
+import { formatGoogleImageUrl, formatPrice } from "@/lib/utils";
+import { Check, Shield, Heart, Share2 } from "lucide-react";
 import { Button } from "./ui/button";
 import { ProductProp } from "@/lib/type";
 import { toast } from "sonner";
+import { useState } from "react";
 
 const ProductPageItemDetails = ({
-  image,
   name,
   price,
   category,
   description,
   marketPrice,
+  imageUrls,
+  stock,
 }: ProductProp) => {
-  const imageUrl =
-    typeof image === "string" ? image : image?.url || "/vegesLogo.png";
+  const [quantity] = useState(1);
+  const isOutOfStock = stock === 0;
 
-  const addToCart = () => {
-    toast.success(`${name} is Added to cart`);
+  const handleAddToCart = () => {
+    toast.success(`${name} (${quantity}) added to cart`, {
+      action: {
+        label: "Undo",
+        onClick: () => console.log("Undo add to cart"),
+      },
+    });
   };
+
+  const handleShare = () => {
+    navigator.clipboard.writeText(window.location.href);
+    toast.info("Product link copied to clipboard");
+  };
+
+  const productMainImage =
+    formatGoogleImageUrl(imageUrls[0]?.url) || "/icon2.png";
+
+  const breadcrumbCategory = category?.replace(/\s+/g, "-").toLowerCase();
 
   return (
     <div className="mx-auto max-w-2xl py-14 px-4 sm:px-6 lg:grid lg:max-w-7xl lg:grid-cols-2 lg:gap-x-8 lg:px-8 bg-white rounded-3xl shadow-xl">
       {/* Product images */}
-      <div className="aspect-auto rounded-lg">
-        {/* <ImageSlider urls={validUrls} /> */}
+      <div className="aspect-auto rounded-lg relative group">
         <Image
-          src={imageUrl}
-          alt={"name"}
-          width={500}
-          height={200}
-          className={`object-contain max-h-full max-w-full rounded-xl transition-opacity duration-300 `}
+          src={productMainImage}
+          alt={name}
+          width={600}
+          height={400}
+          className="object-contain w-full h-full rounded-xl"
+          priority
+          onError={(e) => {
+            (e.target as HTMLImageElement).src = "/placeholder-product.jpg";
+          }}
         />
+        {isOutOfStock && (
+          <div className="absolute inset-0 bg-black/50 flex items-center justify-center rounded-xl">
+            <span className="text-white text-2xl font-bold">Out of Stock</span>
+          </div>
+        )}
       </div>
 
       {/* Product Details */}
       <div className="lg:max-w-lg lg:self-start">
-        <Breadcrumb>
+        <Breadcrumb className="mb-4">
           <BreadcrumbList>
             <BreadcrumbItem>
               <BreadcrumbLink href="/">Home</BreadcrumbLink>
             </BreadcrumbItem>
             <BreadcrumbSeparator />
             <BreadcrumbItem>
-              <BreadcrumbLink href="/product">Product</BreadcrumbLink>
+              <BreadcrumbLink href={`/categories/${breadcrumbCategory}`}>
+                {category}
+              </BreadcrumbLink>
             </BreadcrumbItem>
             <BreadcrumbSeparator />
             <BreadcrumbItem>
@@ -62,57 +89,64 @@ const ProductPageItemDetails = ({
           </BreadcrumbList>
         </Breadcrumb>
 
-        <div className="mt-4">
-          <h1 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
-            {name}
-          </h1>
+        <h1 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl mb-6">
+          {name}
+        </h1>
+
+        <div className="flex flex-col gap-4 mb-6">
+          <div className="flex items-baseline gap-4">
+            <span className="text-2xl font-bold text-primary">
+              {formatPrice(price)}
+            </span>
+            {marketPrice && marketPrice > price && (
+              <span className="text-lg text-gray-500 line-through">
+                {formatPrice(marketPrice)}
+              </span>
+            )}
+          </div>
         </div>
 
-        <section className="mt-4">
-          <div className="flex items-center">
-            <p className="font-medium text-black">{formatPrice(price)}</p>
-            <p className="font-medium border-l ml-4 pl-4 text-gray-500">
-              {formatPrice(marketPrice ?? "")}
-            </p>
+        <div className="prose mb-8">
+          <h3 className="text-lg font-semibold mb-2">Product Details</h3>
+          <div className="space-y-2">
+            {description.split("\n").map((line, index) => (
+              <p key={index} className="text-muted-foreground">
+                {line}
+              </p>
+            ))}
+          </div>
+        </div>
 
-            <div className="ml-4 border-l text-muted-foreground border-gray-300 pl-4">
-              {category}
+        <div className="flex flex-col gap-6">
+          <div className="flex items-center gap-4">
+            <Button
+              className="flex-1"
+              onClick={handleAddToCart}
+              disabled={isOutOfStock}
+            >
+              {isOutOfStock ? "Out of Stock" : "Add to Cart"}
+            </Button>
+          </div>
+
+          <div className="flex items-center gap-4">
+            <Button variant="outline" className="flex-1" onClick={handleShare}>
+              <Share2 className="w-4 h-4 mr-2" />
+              Share
+            </Button>
+            <Button variant="outline" className="flex-1">
+              <Heart className="w-4 h-4 mr-2" />
+              Wishlist
+            </Button>
+          </div>
+
+          <div className="mt-4 space-y-2">
+            <div className="flex items-center text-sm text-muted-foreground">
+              <Check className="h-5 w-5 flex-shrink-0 text-green-500 mr-2" />
+              {stock > 0 ? `${stock} items in stock` : "Restocking soon"}
             </div>
-          </div>
-
-          <div className="mt-4 space-y-6">
-            <p className="text-base text-muted-foreground">{description}</p>
-          </div>
-
-          <div className="mt-6 flex items-center">
-            <Check
-              aria-hidden="true"
-              className="h-5 w-5 flex-shrink-0 text-green-500"
-            />
-            <p className="ml-2 text-sm text-muted-foreground">
-              Eligible for delivery
-            </p>
-          </div>
-        </section>
-
-        {/* add to cart part */}
-        <div className="mt-10 lg:col-start-1 lg:row-start-2 lg:max-w-lg lg:self-start">
-          <div>
-            <div className="mt-10">
-              <Button className="w-full" onClick={addToCart}>
-                Add to cart
-              </Button>
-            </div>
-            <div className="mt-6 text-center">
-              <div className="group inline-flex text-sm text-medium">
-                <Shield
-                  aria-hidden="true"
-                  className="mr-2 h-5 w-5 flex-shrink-0 text-gray-400"
-                />
-                <span className="text-muted-foreground hover:text-gray-700">
-                  30 Day Return Guarantee
-                </span>
-              </div>
+            <div className="flex items-center text-sm text-muted-foreground">
+              <Shield className="h-5 w-5 flex-shrink-0 text-gray-400 mr-2" />
+              30 Day Return Guarantee
             </div>
           </div>
         </div>

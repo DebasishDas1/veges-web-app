@@ -16,12 +16,14 @@ export function formatPrice(
   const { currency = "INR", notation = "compact" } = options;
 
   const numericPrice = typeof price === "string" ? parseFloat(price) : price;
+  if (isNaN(numericPrice)) return "Invalid Price";
 
   return new Intl.NumberFormat("en-US", {
     style: "currency",
     currency,
     notation,
-    maximumFractionDigits: 4,
+    minimumFractionDigits: 2, // Ensure consistent decimal places
+    maximumFractionDigits: 2,
   }).format(numericPrice);
 }
 
@@ -36,28 +38,24 @@ export function constructMetadata({
   description?: string;
   noIndex?: boolean;
   exact?: boolean;
-  keywords?: string;
+  keywords?: string | string[];
 } = {}): Metadata {
   return {
     title: exact ? title : `${title} - Veges`,
     description,
-    openGraph: {
-      title,
-      description,
-    },
-    keywords,
+    openGraph: { title, description },
+    keywords: Array.isArray(keywords) ? keywords.join(", ") : keywords,
     twitter: {
       card: "summary_large_image",
       title,
       description,
       creator: "@debasish",
     },
-    metadataBase: new URL("https://www.veges.in/"),
+    metadataBase: new URL(
+      process.env.NEXT_PUBLIC_SITE_URL || "https://www.veges.in/"
+    ),
     ...(noIndex && {
-      robots: {
-        index: false,
-        follow: false,
-      },
+      robots: { index: false, follow: false },
     }),
   };
 }
@@ -75,3 +73,10 @@ export const subTitleCheck = ({
 
   return updatedPathList.includes(text.toLowerCase());
 };
+
+export function formatGoogleImageUrl(url?: string) {
+  if (!url) return null;
+
+  const match = url.match(/(?:\/d\/|id=)([^\/?]+)/);
+  return match ? `https://drive.google.com/uc?export=view&id=${match[1]}` : url;
+}

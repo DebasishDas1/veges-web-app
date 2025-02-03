@@ -1,8 +1,20 @@
 import MaxWidthWrapper from "@/components/MaxWidthWrapper";
 import ProductList from "@/components/ProductList";
 import { perks } from "@/lib/bin/info";
-import HomeHeroSection from "@/components/HomeHeroSection";
 import { getProductList } from "@/api/get-product";
+import { LucideIcon } from "lucide-react";
+import dynamic from "next/dynamic";
+import { Skeleton } from "@/components/ui/skeleton";
+
+interface Perk {
+  name: string;
+  description: string;
+  Icon: LucideIcon; // Use Lucide's type for icons
+}
+
+const HomeHeroSection = dynamic(() => import("@/components/HomeHeroSection"), {
+  loading: () => <Skeleton className="h-[400px] w-full" />,
+});
 
 const Home = async () => {
   const products = await getProductList({});
@@ -12,19 +24,25 @@ const Home = async () => {
       <HomeHeroSection />
 
       <MaxWidthWrapper>
-        <ProductList list={products} title={"Produce"} />
+        <ProductList list={products} title="Fresh Produce" />
       </MaxWidthWrapper>
 
       <MaxWidthWrapper className="py-20">
         <div className="grid grid-cols-1 gap-y-12 sm:grid-cols-2 sm:gap-x-6 lg:grid-cols-3 lg:gap-x-8 lg:gap-y-0">
-          {perks.map((perk) => (
+          {(perks as Perk[]).map((perk) => (
             <div
               key={perk.name}
               className="text-center md:flex md:items-start md:text-left lg:block lg:text-center py-3"
+              role="region"
+              aria-label={perk.name}
             >
               <div className="md:flex-shrink-0 flex justify-center">
-                <div className="h-16 w-16 flex items-center justify-center rounded-full bg-green-700 text-white">
-                  {<perk.Icon className="w-1/3 h-1/3" />}
+                <div
+                  className="h-16 w-16 flex items-center justify-center rounded-full bg-green-700 text-white"
+                  role="img"
+                  aria-label={`${perk.name} icon`}
+                >
+                  <perk.Icon className="w-1/3 h-1/3" aria-hidden="true" />
                 </div>
               </div>
 

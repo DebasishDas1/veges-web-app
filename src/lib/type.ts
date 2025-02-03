@@ -17,6 +17,12 @@ export interface HeroSectionProp {
 export interface ProductListProp {
   list: ProductProp[];
   title: string;
+  emptyMessage?: string;
+}
+
+export interface googleImageProp {
+  url: string;
+  id: string;
 }
 
 export interface ProductProp {
@@ -24,11 +30,12 @@ export interface ProductProp {
   urlTitle: string;
   name: string;
   image?: (string | null) | Media;
+  imageUrls: googleImageProp[];
   price: number;
   marketPrice?: number | null;
   category?: string | null;
   unit?: string;
-  available?: boolean | null; // Updated to allow `undefined` and `null`
+  stock: number;
   description: string;
   createdAt: string;
   updatedAt: string;

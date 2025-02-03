@@ -14,6 +14,10 @@ const nextConfig = {
         port: "",
         pathname: "/**",
       },
+      {
+        protocol: "https",
+        hostname: "drive.google.com",
+      },
     ],
     formats: ["image/avif", "image/webp"], // Modern image formats
     minimumCacheTTL: 86400, // Cache images for 24 hours

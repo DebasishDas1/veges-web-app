@@ -2,75 +2,72 @@
 
 import Image from "next/image";
 import { ProductProp } from "@/lib/type";
-import { formatPrice } from "@/lib/utils";
-import { Button } from "./ui/button";
+import { formatPrice, formatGoogleImageUrl } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
-import { useRouter } from "next/navigation"; // Import useRouter for navigation
+import { useRouter } from "next/navigation";
+import { cn } from "@/lib/utils";
+import { useEffect, useState } from "react";
 
-const ProductItem = ({
-  image,
-  name,
-  price,
-  urlTitle,
-  marketPrice = null,
-  available = true,
-}: ProductProp) => {
-  const router = useRouter(); // Initialize the router
+interface ProductItemProps {
+  product: ProductProp;
+}
 
-  // console.log("yo : ", image);
+const ProductItem = ({ product }: ProductItemProps) => {
+  const router = useRouter();
+  const { name, stock, price, marketPrice, imageUrls, urlTitle } = product;
 
-  const imageUrl =
-    typeof image === "string" ? image : image?.url || "/icon2.png";
+  const [formattedPrice, setFormattedPrice] = useState("");
+  const [formattedMarketPrice, setFormattedMarketPrice] = useState("");
 
-  // const imageUrl = typeof image === "string" ? image : "/icon2.png";
+  useEffect(() => {
+    setFormattedPrice(formatPrice(price));
+    setFormattedMarketPrice(marketPrice ? formatPrice(marketPrice) : "");
+  }, [price, marketPrice]);
+
+  const productMainImage =
+    formatGoogleImageUrl(imageUrls[0]?.url) || "/icon2.png";
 
   const handleRedirect = () => {
-    router.push(`/product/${urlTitle}`);
+    router.push(`/product/${encodeURIComponent(urlTitle)}`);
   };
 
   return (
-    <div className="p-2 py-6 md:p-6 flex flex-col items-center justify-center gap-3 shadow-md rounded-2xl hover:scale-105 hover:shadow-md transition-all ease-in-out cursor-pointer bg-white group">
-      <div
-        className="relative h-[200px] w-[200px] flex items-center justify-center overflow-hidden"
-        onClick={handleRedirect}
-      >
+    <div className="p-2 py-8 md:p-6 flex flex-col items-center gap-3 shadow-lg md:shadow-md rounded-2xl cursor-pointer bg-white group">
+      <div className="relative h-[200px] w-[200px] flex items-center justify-center overflow-hidden">
         <Image
-          src={imageUrl}
-          // src="/icon2.png"
-          alt={name}
+          src={productMainImage}
+          alt={"Product image"}
           width={500}
           height={200}
-          className={`object-contain max-h-full max-w-full rounded-xl transition-opacity duration-300 ${
-            available ? "opacity-100" : "opacity-50 blur-sm"
-          }`}
+          quality={80}
+          priority={false}
+          className={cn(
+            "object-contain max-h-full max-w-full rounded-xl transition-opacity duration-300",
+            stock === 0 ? "opacity-50 blur-sm" : "opacity-100"
+          )}
+          onClick={handleRedirect}
+          onError={(e) => {
+            (e.target as HTMLImageElement).src = "/icon2.png";
+          }}
         />
+        {stock === 0 && (
+          <Badge className="absolute bottom-2 bg-red-50 text-red-500">
+            Out of Stock
+          </Badge>
+        )}
       </div>
-
       <h2
-        className="font-black text-xl text-center truncate w-full"
+        className="font-black text-2xl text-center truncate w-full"
         onClick={handleRedirect}
       >
         {name || "Unknown Product"}
       </h2>
-
-      <div className="flex gap-3 items-center">
-        {price !== null && <h2 className="font-bold">{formatPrice(price)}</h2>}
+      <div className="flex gap-3 items-center font-bold">
+        {price && <h3 className="text-green-700">{formattedPrice}</h3>}
         {marketPrice && (
-          <h2 className="line-through text-gray-400">
-            {formatPrice(marketPrice)}
-          </h2>
-        )}
-        {!available && (
-          <Badge className="bg-red-50 text-red-500">Out of Stock</Badge>
+          <h3 className="line-through text-gray-400">{formattedMarketPrice}</h3>
         )}
       </div>
-
-      <Button
-        variant="outline"
-        className="group-hover:bg-primary group-hover:text-white"
-      >
-        {name || "Product"} Details
-      </Button>
     </div>
   );
 };

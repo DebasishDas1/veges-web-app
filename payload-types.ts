@@ -14,18 +14,24 @@ export interface Config {
     users: User;
     product: Product;
     media: Media;
-    'payload-locked-documents': PayloadLockedDocument;
-    'payload-preferences': PayloadPreference;
-    'payload-migrations': PayloadMigration;
+    "payload-locked-documents": PayloadLockedDocument;
+    "payload-preferences": PayloadPreference;
+    "payload-migrations": PayloadMigration;
   };
   collectionsJoins: {};
   collectionsSelect: {
     users: UsersSelect<false> | UsersSelect<true>;
     product: ProductSelect<false> | ProductSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
-    'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
-    'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
-    'payload-migrations': PayloadMigrationsSelect<false> | PayloadMigrationsSelect<true>;
+    "payload-locked-documents":
+      | PayloadLockedDocumentsSelect<false>
+      | PayloadLockedDocumentsSelect<true>;
+    "payload-preferences":
+      | PayloadPreferencesSelect<false>
+      | PayloadPreferencesSelect<true>;
+    "payload-migrations":
+      | PayloadMigrationsSelect<false>
+      | PayloadMigrationsSelect<true>;
   };
   db: {
     defaultIDType: string;
@@ -34,7 +40,7 @@ export interface Config {
   globalsSelect: {};
   locale: null;
   user: User & {
-    collection: 'users';
+    collection: "users";
   };
   jobs: {
     tasks: unknown;
@@ -65,7 +71,7 @@ export interface UserAuthOperations {
  */
 export interface User {
   id: string;
-  role: 'admin' | 'user';
+  role: "admin" | "user";
   updatedAt: string;
   createdAt: string;
   email: string;
@@ -81,19 +87,26 @@ export interface User {
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "product".
  */
+
+export interface googleImageProp {
+  url: string;
+  id: string;
+}
 export interface Product {
   id: string;
   name: string;
   image?: (string | null) | Media;
   price: number;
   marketPrice?: number | null;
-  category: 'spices-whole' | 'spices-powder' | 'rice' | 'oil';
+  category: "spices-whole" | "spices-powder" | "rice" | "oil";
   unit: string;
   available?: boolean | null;
   urlTitle: string;
   description: string;
   updatedAt: string;
   createdAt: string;
+  imageUrls: googleImageProp[];
+  stock: number;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -122,20 +135,20 @@ export interface PayloadLockedDocument {
   id: string;
   document?:
     | ({
-        relationTo: 'users';
+        relationTo: "users";
         value: string | User;
       } | null)
     | ({
-        relationTo: 'product';
+        relationTo: "product";
         value: string | Product;
       } | null)
     | ({
-        relationTo: 'media';
+        relationTo: "media";
         value: string | Media;
       } | null);
   globalSlug?: string | null;
   user: {
-    relationTo: 'users';
+    relationTo: "users";
     value: string | User;
   };
   updatedAt: string;
@@ -148,7 +161,7 @@ export interface PayloadLockedDocument {
 export interface PayloadPreference {
   id: string;
   user: {
-    relationTo: 'users';
+    relationTo: "users";
     value: string | User;
   };
   key?: string | null;
@@ -266,7 +279,6 @@ export interface Auth {
   [k: string]: unknown;
 }
 
-
-declare module 'payload' {
+declare module "payload" {
   export interface GeneratedTypes extends Config {}
 }
