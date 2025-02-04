@@ -25,26 +25,26 @@ const MobileNav = () => {
     <SheetClose asChild key={href}>
       <Link
         href={href}
-        className={`flex regular-16 py-4 ${
+        className={`flex regular-16 py-4 text-3xl font-semibold outline-none ${
           subTitleCheck({ pathnameList, text: label }) ? "text-green-700" : ""
         }`}
       >
-        <button
-          type="submit"
-          className="outline-none flex items-center text-3xl font-semibold"
-        >
-          <span>{label}</span>
-        </button>
+        {label}
       </Link>
     </SheetClose>
   );
 
   return (
     <Sheet>
-      <SheetTrigger asChild>
-        <Menu />
+      <SheetTrigger asChild aria-label="Open navigation menu">
+        <Menu aria-hidden="true" />
       </SheetTrigger>
-      <SheetContent className="bg-white" side="top">
+      <SheetContent
+        className="bg-white"
+        side="top"
+        role="dialog"
+        aria-modal="true"
+      >
         <SheetHeader>
           <SheetTitle>
             <Link href="/" className="ml-4 flex lg:ml-0 py-4">

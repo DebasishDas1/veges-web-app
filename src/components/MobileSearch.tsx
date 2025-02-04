@@ -12,7 +12,7 @@ const MobileSearch = () => {
   return (
     <Sheet>
       <SheetTrigger className="px-4">
-        <Search />
+        <Search aria-label={"search"} />
       </SheetTrigger>
       <SheetContent side={"top"}>
         <SheetHeader>

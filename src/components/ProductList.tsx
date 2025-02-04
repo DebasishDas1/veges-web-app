@@ -23,11 +23,9 @@ const ProductList = ({ title, list, emptyMessage }: ProductListProp) => {
           aria-label="List of products"
         >
           {list.map((product) => (
-            <ProductItem
-              key={product.id}
-              product={product}
-              aria-label={`Product: ${product.name}`}
-            />
+            <div key={product.id} role="listitem">
+              <ProductItem product={product} />
+            </div>
           ))}
         </div>
       )}

@@ -38,8 +38,15 @@ const Cart = () => {
 
   return (
     <Sheet>
-      <SheetTrigger className="group -m-2 flex items-center p-2">
-        <ShoppingBag aria-hidden="true" className="h-6 w-6 flex-shrink-0" />
+      <SheetTrigger
+        className="group -m-2 flex items-center p-2"
+        aria-label="Open Shopping Bag"
+      >
+        <ShoppingBag
+          aria-hidden="true"
+          className="h-6 w-6 flex-shrink-0"
+          aria-label={"Shopping Bag"}
+        />
         <span className="ml-2 text-sm font-medium hidden md:flex">
           {isMounted ? itemCount : 0}
         </span>

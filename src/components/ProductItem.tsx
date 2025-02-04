@@ -32,11 +32,18 @@ const ProductItem = ({ product }: ProductItemProps) => {
   };
 
   return (
-    <div className="p-2 py-8 md:p-6 flex flex-col items-center gap-3 shadow-lg md:shadow-md rounded-2xl cursor-pointer bg-white group">
+    <div
+      role="button"
+      tabIndex={0}
+      className="p-2 py-8 md:p-6 flex flex-col items-center gap-3 shadow-lg md:shadow-md 
+      rounded-2xl cursor-pointer bg-white group focus:ring-2 focus:ring-green-500 shadow-green-200"
+      onClick={handleRedirect}
+      onKeyDown={(e) => e.key === "Enter" && handleRedirect()}
+    >
       <div className="relative h-[200px] w-[200px] flex items-center justify-center overflow-hidden">
         <Image
           src={productMainImage}
-          alt={"Product image"}
+          alt={name || "Product image"}
           width={500}
           height={200}
           quality={80}
@@ -45,9 +52,10 @@ const ProductItem = ({ product }: ProductItemProps) => {
             "object-contain max-h-full max-w-full rounded-xl transition-opacity duration-300",
             stock === 0 ? "opacity-50 blur-sm" : "opacity-100"
           )}
-          onClick={handleRedirect}
           onError={(e) => {
-            (e.target as HTMLImageElement).src = "/icon2.png";
+            const target = e.target as HTMLImageElement;
+            target.src = "/icon2.png";
+            target.alt = "Default product image";
           }}
         />
         {stock === 0 && (
@@ -56,16 +64,16 @@ const ProductItem = ({ product }: ProductItemProps) => {
           </Badge>
         )}
       </div>
-      <h2
-        className="font-black text-2xl text-center truncate w-full"
-        onClick={handleRedirect}
+      <button
+        aria-label={name || "Unknown Product"}
+        className="font-black text-2xl text-center truncate w-full focus:ring-2 focus:ring-white"
       >
         {name || "Unknown Product"}
-      </h2>
+      </button>
       <div className="flex gap-3 items-center font-bold">
-        {price && <h3 className="text-green-700">{formattedPrice}</h3>}
+        <h3 className="text-green-800 dark:text-green-400">{formattedPrice}</h3>
         {marketPrice && (
-          <h3 className="line-through text-gray-400">{formattedMarketPrice}</h3>
+          <h3 className="line-through text-gray-600">{formattedMarketPrice}</h3>
         )}
       </div>
     </div>

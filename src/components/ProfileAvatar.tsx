@@ -13,7 +13,7 @@ const ProfileAvatar = ({
       {loggedIn ? (
         <Link href="/profile" className="flex">
           <Avatar className="h-fit">
-            <AvatarImage src={avatarImage} />
+            <AvatarImage src={avatarImage} aria-label={"user"} />
             <AvatarFallback>{avatarName ? avatarName[0] : ""}</AvatarFallback>
           </Avatar>
           <span className="hidden md:flex pl-3 text-green-700">
@@ -22,7 +22,7 @@ const ProfileAvatar = ({
         </Link>
       ) : (
         <Link href="/sign-in">
-          <UserRound />
+          <UserRound aria-label={"user"} />
         </Link>
       )}
     </div>
