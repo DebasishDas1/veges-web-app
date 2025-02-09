@@ -2,6 +2,7 @@ import { getProductDetailsByName } from "@/api/get-product";
 import MaxWidthWrapper from "@/components/MaxWidthWrapper";
 import ProductPageItemDetails from "@/components/ProductPageItemDetails";
 import { constructMetadata } from "@/lib/utils";
+import BenefitFromVeges from "@/components/BenefitFromVeges";
 
 interface PageProps {
   params: Promise<{ productName: string }>;
@@ -26,6 +27,7 @@ const page = async ({ params }: PageProps) => {
   return (
     <MaxWidthWrapper className="pb-12 pt-4">
       <ProductPageItemDetails {...product} />
+      <BenefitFromVeges stock={product.stock} />
     </MaxWidthWrapper>
   );
 };

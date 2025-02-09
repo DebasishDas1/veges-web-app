@@ -4,7 +4,10 @@ import { ProductListProp } from "@/lib/type";
 
 const ProductList = ({ title, list, emptyMessage }: ProductListProp) => {
   return (
-    <section aria-labelledby="product-list-heading" className="text-center">
+    <section
+      aria-labelledby="product-list-heading"
+      className="text-center py-8"
+    >
       <h2
         id="product-list-heading"
         className="font-bold text-3xl md:text-4xl lg:text-5xl my-4 text-green-700"

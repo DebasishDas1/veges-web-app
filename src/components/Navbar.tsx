@@ -5,7 +5,7 @@ import Link from "next/link";
 import MaxWidthWrapper from "./MaxWidthWrapper";
 import MobileNav from "./MobileNav";
 import Image from "next/image";
-import Cart from "./Cart";
+import Bag from "./Bag";
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -97,7 +97,7 @@ const Navbar = () => {
 
           {/* Mobile Navigation */}
           <div className="flex md:hidden">
-            <Cart />
+            <Bag />
             <ProfileAvatar
               loggedIn={userData?.success}
               avatarName={userData?.user?.email}
@@ -112,7 +112,7 @@ const Navbar = () => {
               loggedIn={userData?.success}
               avatarName={userData?.user?.email}
             />
-            <Cart />
+            <Bag />
           </div>
         </MaxWidthWrapper>
       </header>

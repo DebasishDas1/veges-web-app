@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { motion } from "framer-motion";
-import { MoveRight, PhoneCall } from "lucide-react";
+import { PhoneCall } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const HomeHeroSection = () => {
@@ -67,11 +67,8 @@ const HomeHeroSection = () => {
             </p>
           </div>
           <div className="flex flex-row gap-3">
-            <Button size="lg" className="gap-4" variant="outline">
-              Jump on a call <PhoneCall className="w-4 h-4" />
-            </Button>
             <Button size="lg" className="gap-4">
-              Sign up here <MoveRight className="w-4 h-4" />
+              Jump on a call <PhoneCall className="w-4 h-4" />
             </Button>
           </div>
         </div>

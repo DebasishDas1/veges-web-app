@@ -1,5 +1,6 @@
 import { StaticImageData } from "next/image";
 import { User } from "../../payload-types";
+import { LucideIcon } from "lucide-react";
 // import { execPath } from "process";
 
 export interface NavItemProps {
@@ -145,4 +146,10 @@ export interface ProfileAvatarProps {
   loggedIn?: boolean;
   avatarImage?: string;
   avatarName?: string;
+}
+
+export interface AdvantageProp {
+  name: string;
+  description: string;
+  Icon: LucideIcon;
 }

@@ -1,6 +1,6 @@
 import { Wheat, Truck, MapPinHouse } from "lucide-react";
 
-export const perks = [
+export const homePageAdvantages = [
   {
     name: "Biryani masala wholesale",
     Icon: Truck,
