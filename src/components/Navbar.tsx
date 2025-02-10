@@ -52,11 +52,12 @@ const Navbar = () => {
             <Link href="/" className="flex-shrink-0" aria-label="Home">
               <div className="h-7 w-20 relative overflow-hidden md:mx-auto">
                 <Image
-                  src="/icon2.png"
+                  src="/veges_logo.png"
                   alt="Logo"
                   fill
                   priority
                   className="object-cover object-center"
+                  sizes="80px"
                 />
               </div>
             </Link>

@@ -1,6 +1,6 @@
 "use client";
 
-import { ShoppingBag } from "lucide-react";
+import { ShoppingBag, PiggyBank } from "lucide-react";
 import {
   Sheet,
   SheetContent,
@@ -10,7 +10,6 @@ import {
   SheetTrigger,
   SheetDescription,
 } from "./ui/sheet";
-import { Separator } from "./ui/separator";
 import { formatPrice } from "@/lib/utils";
 import Link from "next/link";
 import { buttonVariants } from "./ui/button";
@@ -25,7 +24,15 @@ const Bag = () => {
   const { items } = useCartStore();
 
   const itemCount = items.length;
-  const cartTotal = items.reduce((total, product) => total + product.price, 0);
+  const cartTotal = items.reduce(
+    (total, product) => total + product.price * product.quantity,
+    0
+  );
+  const savingsTotal = items.reduce(
+    (total, product) =>
+      total + ((product.marketPrice ?? 0) - product.price) * product.quantity,
+    0
+  );
   const fee = 1;
 
   useEffect(() => {
@@ -47,13 +54,17 @@ const Bag = () => {
           {isMounted ? itemCount : 0}
         </span>
       </SheetTrigger>
-      <SheetContent className="flex w-full flex-col pr-0 sm:max-w-lg">
+      <SheetContent className="flex w-full flex-col pr-0 sm:max-w-lg bg-gray-100">
         <SheetHeader className="space-y-2.5 pr-6 text-border">
           <SheetTitle>Bag ({itemCount})</SheetTitle>
           <SheetDescription>Pick up where you left off</SheetDescription>
         </SheetHeader>
         {itemCount > 0 ? (
           <>
+            <div className="bg-green-200 font-bold p-4 w-[95%] rounded-xl text-xl flex gap-3 items-center justify-center">
+              <PiggyBank size={30} />
+              Savings: {formatPrice(savingsTotal)}
+            </div>
             <div className="flex w-full flex-col pr-6">
               <ScrollArea>
                 {items.map((product) => (
@@ -62,7 +73,6 @@ const Bag = () => {
               </ScrollArea>
             </div>
             <div className="space-y-4 pr-6">
-              <Separator />
               <div className="space-y-1.5 text-sm">
                 <div className="flex">
                   <span className="flex-1">Shipping</span>

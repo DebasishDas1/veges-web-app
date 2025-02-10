@@ -17,14 +17,14 @@ import { toast } from "sonner";
 import { useState, useMemo, useCallback } from "react";
 import { useCartStore } from "@/store";
 
-const DEFAULT_IMAGE = "/icon2.png";
+const DEFAULT_IMAGE = "/veges_logo.png";
 const BLUR_DATA_URL =
   "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkqAcAAIUAgUW0RjgAAAAASUVORK5CYII=";
 
 const QUALITY_BADGES = [
   { icon: ShoppingBag, text: "Premium Sourcing", color: "green" },
   { icon: Trophy, text: "Best Flavors", color: "blue" },
-  { icon: Leaf, text: "Wholesome Goodness", color: "amber" },
+  { icon: Leaf, text: "Wholesome Goodness", color: "yellow" },
 ];
 
 const ProductPageItemDetails = (product: ProductProp) => {
@@ -169,7 +169,7 @@ const ProductPageItemDetails = (product: ProductProp) => {
           {QUALITY_BADGES.map(({ icon: Icon, text, color }) => (
             <div
               key={text}
-              className={`flex items-center gap-1.5 bg-${color}-100 px-3 py-1.5 rounded-full text-sm text-${color}-800 border border-${color}-200`}
+              className={`flex items-center gap-1.5 bg-${color}-100 px-3 py-1.5 rounded-full text-sm text-${color}-400 border`}
             >
               <Icon className="w-4 h-4" />
               <span>{text}</span>

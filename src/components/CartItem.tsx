@@ -11,7 +11,7 @@ const CartItem = ({ product }: { product: ItemsProps }) => {
     product;
 
   const productMainImage = useMemo(
-    () => formatGoogleImageUrl(imageUrls[0]?.url) || "/icon2.png",
+    () => formatGoogleImageUrl(imageUrls[0]?.url) || "/veges_logo.png",
     [imageUrls]
   );
 
@@ -32,7 +32,7 @@ const CartItem = ({ product }: { product: ItemsProps }) => {
   };
 
   return (
-    <div className="p-4 bg-white rounded-md shadow-md">
+    <div className="p-4 bg-white rounded-md shadow-md mb-3">
       <div className="flex gap-4 group">
         {/* Image Section */}
         <div className="w-24 h-24 mx-auto md:mx-0 relative flex-shrink-0">

@@ -1,8 +1,19 @@
+import { memo, useMemo } from "react";
 import ProductItem from "./ProductItem";
 import { Skeleton } from "@/components/ui/skeleton";
 import { ProductListProp } from "@/lib/type";
 
 const ProductList = ({ title, list, emptyMessage }: ProductListProp) => {
+  const productItems = useMemo(
+    () =>
+      list.map((product) => (
+        <div key={product.id} role="listitem">
+          <ProductItem product={product} />
+        </div>
+      )),
+    [list]
+  );
+
   return (
     <section
       aria-labelledby="product-list-heading"
@@ -15,34 +26,30 @@ const ProductList = ({ title, list, emptyMessage }: ProductListProp) => {
         {title}
       </h2>
 
-      {list.length === 0 ? (
-        <p className="text-muted-foreground bg-white rounded-lg border-2 py-20 text-xl">
-          {emptyMessage || "No products found"}
-        </p>
-      ) : (
+      {list.length ? (
         <div
-          className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 my-8 px-4"
+          className="grid grid-cols-1 md:grid-cols-3 gap-6 my-8 px-4"
           role="list"
           aria-label="List of products"
         >
-          {list.map((product) => (
-            <div key={product.id} role="listitem">
-              <ProductItem product={product} />
-            </div>
-          ))}
+          {productItems}
         </div>
+      ) : (
+        <p className="text-gray-500 bg-white rounded-lg border py-16 text-lg">
+          {emptyMessage || "No products found"}
+        </p>
       )}
     </section>
   );
 };
 
-// Loading skeleton component
+// Define Skeleton **before** memoizing
 ProductList.Skeleton = function ProductListSkeleton() {
   return (
     <div className="text-center">
       <Skeleton className="h-9 w-3/4 mx-auto my-4" />
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 my-8 px-4">
-        {Array.from({ length: 6 }).map((_, i) => (
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 my-8 px-4">
+        {Array.from({ length: 6 }, (_, i) => (
           <div key={i} className="border rounded-lg p-4">
             <Skeleton className="h-48 w-full rounded-lg" />
             <Skeleton className="h-6 w-3/4 mt-4 mx-auto" />
@@ -54,4 +61,4 @@ ProductList.Skeleton = function ProductListSkeleton() {
   );
 };
 
-export default ProductList;
+export default memo(ProductList);

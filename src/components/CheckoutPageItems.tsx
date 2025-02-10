@@ -6,6 +6,7 @@ import { useMemo } from "react";
 import Image from "next/image";
 import { Button } from "./ui/button";
 import CartItem from "./CartItem";
+import { PiggyBank } from "lucide-react";
 
 const CheckoutPageItems = () => {
   const { items } = useCartStore();
@@ -19,6 +20,12 @@ const CheckoutPageItems = () => {
         0
       ),
     [items]
+  );
+
+  const savingsTotal = items.reduce(
+    (total, product) =>
+      total + ((product.marketPrice ?? 0) - product.price) * product.quantity,
+    0
   );
 
   return (
@@ -43,6 +50,14 @@ const CheckoutPageItems = () => {
 
       {/* Bag Content */}
       {items.length > 0 && (
+        <div className="bg-green-200 font-bold p-4 w-full rounded-xl text-xl flex gap-3 items-center justify-center md:hidden my-3">
+          <PiggyBank size={30} />
+          Savings: {formatPrice(savingsTotal)}
+        </div>
+      )}
+
+      {/* Bag Content */}
+      {items.length > 0 && (
         <ul className="lg:col-span-7 py-4">
           {items.map((product) => (
             <CartItem product={product} key={product.id} />
@@ -54,7 +69,11 @@ const CheckoutPageItems = () => {
       {items.length > 0 && (
         <section className="mt-16 rounded-lg px-4 py-6 sm:p-6 lg:col-span-5 lg:mt-0 lg:p-8">
           <h2 className="text-lg font-medium">Order Summary</h2>
-          <div className="mt-6 space-y-4">
+          <div className="bg-green-200 font-bold p-4 w-full rounded-xl text-xl md:flex gap-3 items-center justify-center mt-6 hidden">
+            <PiggyBank size={30} />
+            Savings: {formatPrice(savingsTotal)}
+          </div>
+          <div className="space-y-4">
             <div className="flex items-center justify-between py-6">
               <p className="text-sm text-gray-600">Subtotal</p>
               <p className="text-sm font-medium text-gray-900">

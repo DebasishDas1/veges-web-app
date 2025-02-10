@@ -37,6 +37,7 @@ export const footerLinks = [
       { href: "/contact-us", label: "Contact Us" },
       { href: "/privacy-policy", label: "Privacy Policy" },
       { href: "/tos", label: "Terms of Service" },
+      { href: "/about-us", label: "About us" },
     ],
   },
 ];

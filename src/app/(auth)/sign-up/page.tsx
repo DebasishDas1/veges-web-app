@@ -8,7 +8,7 @@ const SignUp = async () => {
   return (
     <>
       <Link href="/">
-        <Image src="/icon2.png" alt="Error" width={300} height={300} />
+        <Image src="/veges_logo.png" alt="Error" width={300} height={300} />
       </Link>
 
       <h1 className="text-2xl font-semibold tracking-tight py-2">

@@ -2,8 +2,9 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { motion } from "framer-motion";
-import { PhoneCall } from "lucide-react";
+import { MoveRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 const HomeHeroSection = () => {
   const [titleNumber, setTitleNumber] = useState(0);
@@ -67,9 +68,11 @@ const HomeHeroSection = () => {
             </p>
           </div>
           <div className="flex flex-row gap-3">
-            <Button size="lg" className="gap-4">
-              Jump on a call <PhoneCall className="w-4 h-4" />
-            </Button>
+            <Link href={"/product"}>
+              <Button size="lg" className="gap-4">
+                Sign up here <MoveRight className="w-4 h-4" />
+              </Button>
+            </Link>
           </div>
         </div>
       </div>

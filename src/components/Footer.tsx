@@ -56,7 +56,7 @@ function Footer() {
         </div>
 
         <div className="w-full flex mt-4 items-center justify-center py-4">
-          <Image src="/icon2.png" alt="Error" width={400} height={400} />
+          <Image src="/veges_logo.png" alt="Error" width={400} height={400} />
         </div>
 
         <p className="text-sm dark:text-gray-400 mt-5 w-full text-center">
