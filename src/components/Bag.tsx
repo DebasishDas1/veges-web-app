@@ -14,7 +14,7 @@ import { formatPrice } from "@/lib/utils";
 import Link from "next/link";
 import { buttonVariants } from "./ui/button";
 import Image from "next/image";
-import { ScrollArea } from "./ui/scroll-area";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import CartItem from "./CartItem";
 import { useEffect, useState } from "react";
 import { useCartStore } from "@/store";
@@ -54,19 +54,19 @@ const Bag = () => {
           {isMounted ? itemCount : 0}
         </span>
       </SheetTrigger>
-      <SheetContent className="flex w-full flex-col pr-0 sm:max-w-lg bg-gray-100">
+      <SheetContent className="flex w-full flex-col pr-0 sm:max-w-l">
         <SheetHeader className="space-y-2.5 pr-6 text-border">
           <SheetTitle>Bag ({itemCount})</SheetTitle>
           <SheetDescription>Pick up where you left off</SheetDescription>
         </SheetHeader>
         {itemCount > 0 ? (
           <>
-            <div className="bg-green-200 font-bold p-4 w-[95%] rounded-xl text-xl flex gap-3 items-center justify-center">
+            <div className="bg-green-200 font-bold p-2 w-[95%] rounded-xl text-xl flex gap-3 items-center justify-center">
               <PiggyBank size={30} />
               Savings: {formatPrice(savingsTotal)}
             </div>
-            <div className="flex w-full flex-col pr-6">
-              <ScrollArea>
+            <div className="flex w-full flex-col pr-5 max-h-[65%]">
+              <ScrollArea className="whitespace-nowrap rounded-md p-2 bg-gray-100">
                 {items.map((product) => (
                   <CartItem product={product} key={product.id} />
                 ))}

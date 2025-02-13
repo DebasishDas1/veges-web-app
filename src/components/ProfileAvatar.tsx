@@ -16,7 +16,7 @@ const ProfileAvatar = ({
             <AvatarImage src={avatarImage} aria-label={"user"} />
             <AvatarFallback>{avatarName ? avatarName[0] : ""}</AvatarFallback>
           </Avatar>
-          <span className="hidden md:flex pl-3 text-green-700">
+          <span className="hidden lg:flex pl-3 text-green-700">
             {avatarName}
           </span>
         </Link>

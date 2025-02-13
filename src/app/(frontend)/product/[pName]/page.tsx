@@ -4,25 +4,29 @@ import ProductPageItemDetails from "@/components/ProductPageItemDetails";
 import { constructMetadata } from "@/lib/utils";
 import BenefitFromVeges from "@/components/BenefitFromVeges";
 
-interface PageProps {
-  params: Promise<{ productName: string }>;
-}
-
-export async function generateMetadata({ params }: PageProps) {
-  const { productName } = await params;
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ pName: string }>;
+}) {
   const product = await getProductDetailsByName({
-    urlTitle: productName,
+    urlTitle: (await params).pName,
   });
 
   return constructMetadata({
-    title: `${product.name}`,
+    title: product.name,
     description: product.description,
   });
 }
 
-const page = async ({ params }: PageProps) => {
-  const { productName } = await params;
-  const product = await getProductDetailsByName({ urlTitle: productName });
+export default async function Page({
+  params,
+}: {
+  params: Promise<{ pName: string }>;
+}) {
+  const product = await getProductDetailsByName({
+    urlTitle: (await params).pName,
+  });
 
   return (
     <MaxWidthWrapper className="pb-12 pt-4">
@@ -30,6 +34,4 @@ const page = async ({ params }: PageProps) => {
       <BenefitFromVeges stock={product.stock} />
     </MaxWidthWrapper>
   );
-};
-
-export default page;
+}

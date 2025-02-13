@@ -3,11 +3,6 @@ import { User } from "../../payload-types";
 import { LucideIcon } from "lucide-react";
 // import { execPath } from "process";
 
-export interface NavItemProps {
-  label: string;
-  href: string;
-}
-
 export interface HeroSectionProp {
   imageSrc?: string | StaticImageData;
   imageAlt: string;
@@ -152,4 +147,17 @@ export interface AdvantageProp {
   name: string;
   description: string;
   Icon: LucideIcon;
+}
+
+export interface ProductCategory {
+  description?: string;
+  productList: {
+    title: string;
+    href: string;
+    description?: string;
+    items?: {
+      name: string;
+      href: string;
+    }[];
+  }[];
 }

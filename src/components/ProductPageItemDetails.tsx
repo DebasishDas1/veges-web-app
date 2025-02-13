@@ -68,14 +68,10 @@ const ProductPageItemDetails = (product: ProductProp) => {
     (delta: number) => {
       setQuantity((prev) => {
         const newQuantity = Math.max(1, prev + delta);
-
-        if (newQuantity !== prev && newQuantity > 1) {
+        if (newQuantity !== prev) {
           toast.info(`${name} ${newQuantity} (${unit}) is added`);
         }
-
-        // Ensure the latest quantity is stored
         updateItemQuantity({ id: product.id, quantity: newQuantity });
-
         return newQuantity;
       });
     },
@@ -102,9 +98,8 @@ const ProductPageItemDetails = (product: ProductProp) => {
           blurDataURL={BLUR_DATA_URL}
           onLoad={(e) => e.currentTarget.classList.remove("opacity-0")}
           onError={(e) => {
-            const target = e.target as HTMLImageElement;
-            target.src = DEFAULT_IMAGE;
-            target.alt = "Fallback product image";
+            e.currentTarget.src = DEFAULT_IMAGE;
+            e.currentTarget.alt = "Fallback product image";
           }}
         />
         {isOutOfStock && (
@@ -169,7 +164,7 @@ const ProductPageItemDetails = (product: ProductProp) => {
           {QUALITY_BADGES.map(({ icon: Icon, text, color }) => (
             <div
               key={text}
-              className={`flex items-center gap-1.5 bg-${color}-100 px-3 py-1.5 rounded-full text-sm text-${color}-400 border`}
+              className={`flex items-center gap-1.5 bg-${color}-100 px-3 py-1.5 rounded-full text-sm border-black border`}
             >
               <Icon className="w-4 h-4" />
               <span>{text}</span>

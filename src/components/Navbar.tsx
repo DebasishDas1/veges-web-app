@@ -6,24 +6,17 @@ import MaxWidthWrapper from "./MaxWidthWrapper";
 import MobileNav from "./MobileNav";
 import Image from "next/image";
 import Bag from "./Bag";
-import {
-  NavigationMenu,
-  NavigationMenuContent,
-  NavigationMenuItem,
-  NavigationMenuLink,
-  NavigationMenuList,
-  NavigationMenuTrigger,
-} from "@/components/ui/navigation-menu";
 import { getUserData } from "@/api/user-auth";
-import { product_categories } from "@/lib/bin/product_categories";
+import { product_categories } from "@/lib/links";
 import React from "react";
-import { cn } from "@/lib/utils";
 import MobileSearch from "./MobileSearch";
 import ProfileAvatar from "./ProfileAvatar";
 import { GetUserDataProp } from "@/lib/type";
+import MegaMenu from "./MegaMenu";
 
 const Navbar = () => {
   const [userData, setUserData] = useState<GetUserDataProp>();
+  const [isMegaMenuHovered, setIsMegaMenuHovered] = useState(false);
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -44,7 +37,11 @@ const Navbar = () => {
   }, []);
 
   return (
-    <div className="backdrop-blur-3xl bg-white/30 sticky z-50 top-0 inset-x-0 h-14">
+    <div
+      className={`${
+        isMegaMenuHovered ? "bg-white" : "bg-white/30"
+      } backdrop-blur-3xl sticky z-50 top-0 inset-x-0 h-14 transition-colors duration-300`}
+    >
       <header className="relative">
         <MaxWidthWrapper className="flex h-14 items-center justify-between px-6">
           <div className="flex items-center justify-between ">
@@ -62,37 +59,27 @@ const Navbar = () => {
               </div>
             </Link>
 
-            {/* Desktop option Navigation */}
-            <div className="hidden md:flex lg:ml-8 lg:block lg:self-stretch">
-              <nav
-                className="hidden md:flex h-full gap-2"
-                aria-label="Main Navigation"
-              >
-                <NavigationMenu>
-                  <NavigationMenuList>
-                    {product_categories.map((categories, i) => (
-                      <NavigationMenuItem key={i}>
-                        <NavigationMenuTrigger className="font-bold text-lg bg-transparent">
-                          {categories.label}
-                        </NavigationMenuTrigger>
-                        <NavigationMenuContent>
-                          <ul className="grid w-[800px] gap-3 p-4 grid-cols-2">
-                            {categories.featured.map((item) => (
-                              <ListItem
-                                key={item.name}
-                                title={item.name}
-                                href={item.href}
-                              >
-                                {item.name}
-                              </ListItem>
-                            ))}
-                          </ul>
-                        </NavigationMenuContent>
-                      </NavigationMenuItem>
-                    ))}
-                  </NavigationMenuList>
-                </NavigationMenu>
-              </nav>
+            {/* Desktop mega menu Navigation */}
+            <div className="hidden md:flex gap-14 ml-14">
+              {product_categories.map((item) => (
+                <div
+                  key={item.category}
+                  className="group"
+                  // Set the state on hover to update the Navbar background
+                  onMouseEnter={() => setIsMegaMenuHovered(true)}
+                  onMouseLeave={() => setIsMegaMenuHovered(false)}
+                >
+                  <div className="text-lg font-semibold border-b-[3px] border-transparent hover:border-black">
+                    <Link href={item.href}>{item.category}</Link>
+                    {item.productList && (
+                      <MegaMenu
+                        productList={item.productList}
+                        description={item.description}
+                      />
+                    )}
+                  </div>
+                </div>
+              ))}
             </div>
           </div>
 
@@ -122,29 +109,3 @@ const Navbar = () => {
 };
 
 export default Navbar;
-
-const ListItem = React.forwardRef<
-  React.ElementRef<"a">,
-  React.ComponentPropsWithoutRef<"a">
->(({ className, title, children, ...props }, ref) => {
-  return (
-    <li>
-      <NavigationMenuLink asChild>
-        <a
-          ref={ref}
-          className={cn(
-            "block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground",
-            className
-          )}
-          {...props}
-        >
-          <div className="text-3xl font-medium leading-none">{title}</div>
-          <p className="line-clamp-2 text-sm leading-snug text-muted-foreground">
-            {children}
-          </p>
-        </a>
-      </NavigationMenuLink>
-    </li>
-  );
-});
-ListItem.displayName = "ListItem";

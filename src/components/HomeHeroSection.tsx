@@ -70,7 +70,7 @@ const HomeHeroSection = () => {
           <div className="flex flex-row gap-3">
             <Link href={"/product"}>
               <Button size="lg" className="gap-4">
-                Sign up here <MoveRight className="w-4 h-4" />
+                Test the best <MoveRight className="w-4 h-4" />
               </Button>
             </Link>
           </div>

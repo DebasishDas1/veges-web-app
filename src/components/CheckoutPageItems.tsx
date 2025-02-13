@@ -58,7 +58,7 @@ const CheckoutPageItems = () => {
 
       {/* Bag Content */}
       {items.length > 0 && (
-        <ul className="lg:col-span-7 py-4">
+        <ul className="lg:col-span-7 py-4 text-start md:mx-10">
           {items.map((product) => (
             <CartItem product={product} key={product.id} />
           ))}
@@ -98,7 +98,7 @@ const CheckoutPageItems = () => {
             </p>
           </div>
           <div className="mt-6">
-            <Button disabled={items.length === 0} className="w-full" size="lg">
+            <Button disabled={true} className="w-full" size="lg">
               Buy
             </Button>
           </div>

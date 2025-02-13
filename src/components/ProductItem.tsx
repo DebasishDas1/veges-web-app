@@ -2,7 +2,8 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { memo, useCallback, useState } from "react";
+import { memo, useCallback, useMemo, useState } from "react";
+import { useRouter } from "next/navigation";
 import { ProductProp } from "@/lib/type";
 import { formatPrice, formatGoogleImageUrl, cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
@@ -24,16 +25,24 @@ const ProductItem = memo(function ProductItem({
   const { name, stock, price, marketPrice, imageUrls, urlTitle } = product;
   const [isLoading, setIsLoading] = useState(true);
   const [isError, setIsError] = useState(false);
+  const router = useRouter();
 
-  const productMainImage =
-    formatGoogleImageUrl(imageUrls[0]?.url) || DEFAULT_IMAGE;
+  // Memoize the main image URL for the product
+  const productMainImage = useMemo(
+    () => formatGoogleImageUrl(imageUrls?.[0]?.url) ?? DEFAULT_IMAGE,
+    [imageUrls]
+  );
+
+  // Check stock status (a simple boolean so useMemo is optional)
   const isOutOfStock = stock === 0;
 
+  // Handler to remove the skeleton once the image loads
   const handleImageLoad = useCallback(() => {
     setIsLoading(false);
     setIsError(false);
   }, []);
 
+  // Fallback for image errors
   const handleImageError = useCallback(
     (e: React.SyntheticEvent<HTMLImageElement>) => {
       const target = e.currentTarget;
@@ -45,9 +54,15 @@ const ProductItem = memo(function ProductItem({
     []
   );
 
+  // Prefetch the product page on hover for a faster transition
+  const handleMouseEnter = useCallback(() => {
+    router.prefetch(`/product/${encodeURIComponent(urlTitle)}`);
+  }, [router, urlTitle]);
+
   return (
     <Link
       href={`/product/${encodeURIComponent(urlTitle)}`}
+      onMouseEnter={handleMouseEnter}
       className="p-2 py-8 md:p-6 flex flex-col items-center gap-3 shadow-lg md:shadow-md rounded-2xl cursor-pointer bg-white group focus:ring-2 focus:ring-green-500"
     >
       <div className="relative h-[200px] w-[200px] flex items-center justify-center overflow-hidden">
