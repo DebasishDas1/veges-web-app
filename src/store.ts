@@ -8,7 +8,7 @@ export interface ItemsProps extends ProductProp {
 
 interface CartStoreProps {
   items: ItemsProps[];
-  addItem: (product: ProductProp) => void;
+  addItem: (product: ProductProp, count: number) => void;
   removeItem: (productId: string) => void;
   updateItemQuantity: (props: { id: string; quantity: number }) => void;
   clearCart: () => void;
@@ -19,7 +19,7 @@ export const useCartStore = create<CartStoreProps>()(
     (set, get) => ({
       items: [],
 
-      addItem: (product) => {
+      addItem: (product, count) => {
         const { items } = get();
         const existingItem = items.find((item) => item.id === product.id);
 
@@ -34,7 +34,7 @@ export const useCartStore = create<CartStoreProps>()(
           });
         } else {
           // Add new item with quantity 1
-          set({ items: [...items, { ...product, quantity: 1 }] });
+          set({ items: [...items, { ...product, quantity: count }] });
         }
       },
 

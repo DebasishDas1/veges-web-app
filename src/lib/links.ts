@@ -4,11 +4,6 @@ export const footerLinks = [
     links: [
       { href: "/", label: "Home" },
       { href: "/about-us", label: "About Us" },
-      { href: "/rice", label: "Rice" },
-      { href: "/spices-whole", label: "Spices Whole" },
-      { href: "/spices-powder", label: "Spices Powder" },
-      { href: "/biryani-essentials", label: "Biryani Essentials" },
-      { href: "/chinese-essentials", label: "Chinese Essentials" },
     ],
   },
   {
@@ -44,7 +39,7 @@ export const product_categories = [
         items: [
           {
             name: "Green Elaichi",
-            href: "",
+            href: "/product/green-elaichi/",
           },
           {
             name: "Labanga",

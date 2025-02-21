@@ -10,18 +10,14 @@ const MegaMenu = ({ productList, description }: ProductCategory) => {
         <MaxWidthWrapper className="flex gap-24">
           {productList.map((category) => (
             <div key={category.title} className="flex-2">
-              <h3 className="text-3xl font-bold mb-4">
-                <Link href={category.href} className="hover:underline">
-                  {category.title}
-                </Link>
-              </h3>
+              <h3 className="text-sm mb-2 text-gray-400">{category.title}</h3>
               {category.items && (
-                <ul className="space-y-2 text-xl">
+                <ul className="space-y-2 text-2xl font-bold">
                   {category.items.map((item) => (
                     <li key={item.name}>
                       <Link
                         href={item.href}
-                        className="text-gray-600 hover:text-green-600 transition-colors duration-200"
+                        className="hover:text-green-600 transition-colors duration-200"
                       >
                         {item.name}
                       </Link>

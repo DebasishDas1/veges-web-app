@@ -43,13 +43,31 @@ export function constructMetadata({
   return {
     title: exact ? title : `${title} - Veges`,
     description,
-    openGraph: { title, description },
+    openGraph: {
+      title,
+      description,
+      url: `${title} - Veges`,
+      type: "website",
+      locale: "en_US",
+      siteName: "Veges.in",
+      images: [
+        {
+          url: "https://www.veges.in/opengraph-image.png",
+          width: 800,
+          height: 600,
+        },
+      ],
+    },
+    alternates: {
+      canonical: "/",
+    },
     keywords: Array.isArray(keywords) ? keywords.join(", ") : keywords,
     twitter: {
       card: "summary_large_image",
       title,
       description,
       creator: "@debasish",
+      images: ["https://www.veges.in/opengraph-image.png"],
     },
     metadataBase: new URL(
       process.env.NEXT_PUBLIC_SITE_URL || "https://www.veges.in/"

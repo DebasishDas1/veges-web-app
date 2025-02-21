@@ -25,15 +25,15 @@ const HomeHeroSection = () => {
   }, [titleNumber, titles]);
 
   return (
-    <div className="w-full">
+    <div className="w-full bg-green-950">
       <div className="container mx-auto">
         <div className="flex gap-8 py-20 lg:py-40 items-center justify-center flex-col mx-6">
           <div className="flex gap-4 flex-col">
             <h1 className="text-4xl md:text-7xl max-w-2xl tracking-tighter text-center font-regular font-bold">
-              <span className="text-spektr-cyan-50">
+              <span className="text-spektr-cyan-50 text-white">
                 One stop destination for all your
               </span>
-              <span className="relative flex w-full justify-center overflow-hidden text-center md:pb-4 md:pt-1 text-green-700">
+              <span className="relative flex w-full justify-center overflow-hidden text-center md:pb-4 md:pt-1 text-green-400">
                 &nbsp;
                 {titles.map((title, index) => (
                   <motion.span

@@ -3,6 +3,15 @@ import MaxWidthWrapper from "@/components/MaxWidthWrapper";
 import ProductPageItemDetails from "@/components/ProductPageItemDetails";
 import { constructMetadata } from "@/lib/utils";
 import BenefitFromVeges from "@/components/BenefitFromVeges";
+// import { ProductProp } from "@/lib/type";
+
+// export async function generateStaticParams() {
+//   const products: ProductProp[] = await getProductList({});
+
+//   return products.map((post) => ({
+//     pName: post.urlTitle,
+//   }));
+// }
 
 export async function generateMetadata({
   params,

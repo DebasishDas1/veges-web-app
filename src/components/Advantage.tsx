@@ -12,7 +12,7 @@ const Advantage = ({ advantages }: { advantages: AdvantageProp[] }) => {
         >
           <div className="md:flex-shrink-0 flex justify-center">
             <div
-              className="h-16 w-16 flex items-center justify-center rounded-full bg-green-700 text-white"
+              className="h-16 w-16 flex items-center justify-center rounded-full text-green-700 bg-white"
               role="img"
               aria-label={`${advantage.name} icon`}
             >
@@ -21,12 +21,8 @@ const Advantage = ({ advantages }: { advantages: AdvantageProp[] }) => {
           </div>
 
           <div className="mt-6 md:ml-4 md:mt-0 lg:ml-0 lg:mt-6">
-            <h3 className="text-base font-medium text-gray-900">
-              {advantage.name}
-            </h3>
-            <p className="mt-3 text-sm text-muted-foreground">
-              {advantage.description}
-            </p>
+            <h3 className="text-xl font-black text-white">{advantage.name}</h3>
+            <p className="mt-3 text-sm text-white">{advantage.description}</p>
           </div>
         </div>
       ))}

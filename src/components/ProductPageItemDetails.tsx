@@ -53,7 +53,7 @@ const ProductPageItemDetails = (product: ProductProp) => {
   );
 
   const handleAddToCart = useCallback(() => {
-    addItem(product);
+    addItem(product, quantity);
     toast.success(`${name} ${quantity} (${unit}) added to cart`);
   }, [name, quantity, unit, addItem, product]);
 

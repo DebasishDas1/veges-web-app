@@ -1,5 +1,7 @@
 "use client";
 
+import { useState, useMemo } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import {
   Sheet,
   SheetClose,
@@ -12,78 +14,112 @@ import {
 import { product_categories } from "@/lib/links";
 import { Menu } from "lucide-react";
 import Link from "next/link";
-import { JSX } from "react";
-import { usePathname } from "next/navigation";
-import Image from "next/image";
-import { ProductCategory } from "@/lib/type";
-import { subTitleCheck } from "@/lib/utils";
+// import { usePathname } from "next/navigation";
+
+const variants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.3 } },
+  exit: { opacity: 0, y: -20, transition: { duration: 0.3 } },
+};
+
+type ProductListItem = {
+  title: string;
+  href: string;
+  items: { name: string; href: string }[];
+};
 
 const MobileNav = () => {
-  const pathnameList = usePathname().split("/");
+  // const pathname = usePathname();
+  // const pathnameList = useMemo(() => pathname.split("/"), [pathname]);
 
-  const renderNavItem = ({ productList }: ProductCategory): JSX.Element => {
-    return (
-      <>
-        {productList.map((product) => (
-          <SheetClose asChild key={product.href}>
-            <Link
-              href={product.href}
-              className={`flex regular-16 py-3 text-2xl font-semibold outline-none ${
-                subTitleCheck({ pathnameList, text: product.title })
-                  ? "text-green-700"
-                  : ""
-              }`}
-            >
-              {product.title}
-            </Link>
-          </SheetClose>
-        ))}
-      </>
-    );
-  };
+  // Flatten all productList arrays from the categories into one array and memoize it
+  const allProductLists = useMemo<ProductListItem[]>(
+    () => product_categories.flatMap((category) => category.productList),
+    []
+  );
+
+  // State to track the selected product list
+  const [selectedProductList, setSelectedProductList] =
+    useState<ProductListItem | null>(null);
 
   return (
     <Sheet>
       <SheetTrigger asChild aria-label="Open navigation menu">
         <Menu aria-hidden="true" />
       </SheetTrigger>
-      <SheetContent
-        className="bg-white"
-        side="top"
-        role="dialog"
-        aria-modal="true"
-      >
+      <SheetContent side="top" role="dialog" aria-modal="true">
         <SheetHeader>
-          <SheetTitle>
-            <Link href="/" className="flex pl-2 lg:ml-0">
-              <span className="h-11 w-32 relative overflow-hidden">
-                <Image
-                  src="/veges_logo.png"
-                  alt="logo"
-                  fill
-                  priority
-                  className="object-cover"
-                  sizes="(min-width: 769px) 100vw, 1200px"
-                />
-              </span>
-            </Link>
-          </SheetTitle>
-          <SheetDescription className="flex items-start pl-3 text-start">
-            We understand your test.
+          <SheetTitle className="hidden">Navigation</SheetTitle>
+          <SheetDescription className="hidden">
+            Browse through items.
           </SheetDescription>
         </SheetHeader>
-        <div className="pl-3">
-          {product_categories && (
-            <div>
-              {product_categories
-                .filter((option) => option.category !== "Socials")
-                .map((option, index) => (
-                  <div key={option.category || index}>
-                    {renderNavItem(option)}
+        <div className="py-8 text-wrap">
+          <AnimatePresence mode="wait">
+            {selectedProductList ? (
+              <motion.div
+                key="product-list-items"
+                variants={variants}
+                initial="hidden"
+                animate="visible"
+                exit="exit"
+              >
+                {/* Header with Back Button and Selected Title */}
+                <div className="flex items-center mb-4">
+                  <button
+                    onClick={() => setSelectedProductList(null)}
+                    className="mr-2 text-xl font-semibold"
+                    aria-label="Go back"
+                  >
+                    &larr;
+                  </button>
+                  <h2 className="text-lg font-bold text-gray-500">
+                    {selectedProductList.title}
+                  </h2>
+                </div>
+                {/* List of Items for the Selected Product List */}
+                <div className="pl-4 py-2">
+                  {selectedProductList.items.map((item) => (
+                    <SheetClose asChild key={item.href || item.name}>
+                      <Link
+                        href={item.href}
+                        className={`block py-3 text-3xl font-bold cursor-pointe`}
+                      >
+                        {item.name}
+                      </Link>
+                    </SheetClose>
+                  ))}
+                </div>
+              </motion.div>
+            ) : (
+              <motion.div
+                key="product-list-titles"
+                variants={variants}
+                initial="hidden"
+                animate="visible"
+                exit="exit"
+              >
+                {/* List of Product List Titles */}
+                {allProductLists.map((productList) => (
+                  <div key={productList.href || productList.title}>
+                    <div
+                      onClick={() => setSelectedProductList(productList)}
+                      className="flex justify-between w-full py-3 text-3xl font-bold cursor-pointer"
+                      role="button"
+                      tabIndex={0}
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter" || e.key === " ") {
+                          setSelectedProductList(productList);
+                        }
+                      }}
+                    >
+                      {productList.title}
+                    </div>
                   </div>
                 ))}
-            </div>
-          )}
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
       </SheetContent>
     </Sheet>

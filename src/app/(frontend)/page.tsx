@@ -36,9 +36,11 @@ const Home = async () => {
         <ProductList list={products} title="Fresh Produce" />
       </MaxWidthWrapper>
 
-      <MaxWidthWrapper className="py-20">
-        <Advantage advantages={homePageAdvantages} />
-      </MaxWidthWrapper>
+      <div className="bg-green-800">
+        <MaxWidthWrapper className="py-28">
+          <Advantage advantages={homePageAdvantages} />
+        </MaxWidthWrapper>
+      </div>
     </>
   );
 };
